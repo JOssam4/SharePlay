@@ -9,9 +9,12 @@ import { Jumbotron, Button } from 'react-bootstrap';
 //import Playlists from '../components/Playlists';
 
 import NavigationBar from '../components/NavigationBar';
+import SettingsView from "../components/SettingsView";
 
 import { connect } from 'react-redux';
 import { setCurrentUser, showPlaylists } from "../actions";
+
+import '../styles/HomeScreen.css';
 
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -106,6 +109,10 @@ class UserHomeScreen extends Component<Props, State> {
                     <h5>This is your home screen. You can return here whenever you want</h5>
                     <h5>Whenever you're ready, head over to the <a href="/search">Search</a> tab.</h5>
                 </Jumbotron>
+                <div className="optionsWrapper">
+                    <h3 className="optionsText">Specify the data you want to use below</h3>
+                    <SettingsView/>
+                </div>
             </div>
         );
     }
@@ -115,6 +122,7 @@ class UserHomeScreen extends Component<Props, State> {
     * and if it has, update the state to match the props.
     * */
 }
+
 
 const mapStateToProps = (state: any) => ({
     authToken: state.authToken,

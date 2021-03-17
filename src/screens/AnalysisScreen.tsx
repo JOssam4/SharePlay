@@ -260,7 +260,7 @@ class AnalysisScreen extends Component<Props, State> {
                     <Jumbotron>
                         <h1>Welcome to the Analysis Screen {this.state.currentUser}!</h1>
                         <h2>You have searched for {this.state.userSearchedFor}</h2>
-                        <h4>You can use the <a href='/settings'>Settings</a> screen to narrow/broaden your results</h4>
+                        <h4>You can use the options in your <a href='/me'>homepage</a> to narrow/broaden your results</h4>
                     </Jumbotron>
                     <div className="userComparisonWrapper">
                         <div className="currentUserAnalysis">
@@ -305,7 +305,7 @@ class AnalysisScreen extends Component<Props, State> {
                     <Jumbotron>
                         <h1>Welcome to the Analysis Screen {this.state.currentUser}!</h1>
                         <h2>You have searched for {this.state.userSearchedFor}</h2>
-                        <h4>You can use the <a href='/settings'>Settings</a> screen to narrow/broaden your results</h4>
+                        <h4>You can use the options in your <a href='/me'>homepage</a> to narrow/broaden your results</h4>
                     </Jumbotron>
                     <div className="userComparisonWrapper">
                         <div className="currentUserAnalysis">
@@ -346,12 +346,7 @@ class AnalysisScreen extends Component<Props, State> {
             )
         }
         else {
-            return (
-                <div className="analysisScreenWrapper">
-                    <NavigationBar activeScreen='analysis'/>
-                    <h1>Bruh...</h1>
-                </div>
-            )
+            return null;
         }
     }
 

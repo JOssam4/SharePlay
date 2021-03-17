@@ -14,7 +14,7 @@ function NavigationBar(props: Props) {
     let meButton = <li className="nav-item"><a className="nav-link" href="/me">Me</a></li>
     let searchButton = <li className="nav-item"><a className="nav-link" href="/search">Search</a></li>
     let analysisButton = <li className="nav-item"><a className="nav-link" href="/analysis">Analysis</a></li>
-    let settingsButton = <li className="nav-item"><a className="nav-link" href="/settings">Settings</a></li>
+    //let settingsButton = <li className="nav-item"><a className="nav-link" href="/settings">Settings</a></li>
 
     if (props.activeScreen === "me") {
         meButton = <li className="nav-item active"><a className="nav-link disabled" href="/me">Me</a></li>
@@ -25,9 +25,11 @@ function NavigationBar(props: Props) {
     else if (props.activeScreen === "analysis") {
         analysisButton = <li className="nav-item active"><a className="nav-link disabled" href="/analysis">Analysis</a></li>
     }
+    /*
     else if (props.activeScreen === "settings") {
         settingsButton = <li className="nav-item active"><a className="nav-link disabled" href="/settings">Settings</a></li>
     }
+     */
 
     // Disable analysis screen if user has not yet searched for another user.
 
@@ -47,8 +49,6 @@ function NavigationBar(props: Props) {
                     {searchButton}
 
                     {analysisButton}
-
-                    {settingsButton}
                 </ul>
             </div>
         </nav>
