@@ -73,10 +73,7 @@ class UserHomeScreen extends Component<Props, State> {
         this.props.dispatch(showPlaylists());
         this.setState({shouldShowPlaylists: true});
         // This code here can probably be safely deleted but it's not harming anyone so I'll leave it in.
-        this.props.history.push('/me', {
-            authToken: this.props.authToken,
-            shouldShowPlaylists: this.state.shouldShowPlaylists
-        });
+
     }
 
     /*
