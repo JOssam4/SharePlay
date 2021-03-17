@@ -1,13 +1,93 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+#root {
+  height: 100vh;
+  width: 100vw;
+  background-color: #1DB954;
+  align-items: center;
+  justify-content: center;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+div.wrapper {
+  background-color: white;
+  min-height: 100%;
+  min-width: 100%;
+  align-items: center;
+  align-content: center;
+  margin: 0;
+}
+
+div.NavBar {
+  background-color: black;
+  height: 15%;
+  width: 100%;
+  position: sticky; /* So that it moves with the user's scroll*/
+  overflow: hidden;
+  margin: 0;
+
+}
+
+div.NavBar a {
+  color: black;
+  height: 100%;
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+
+div.signed_in_content_wrapper {
+  background-color: #1DB954;
+}
+
+div.jumbotron {
+  width: 100%;
+}
+
+
+div.card-deck {
+  padding-bottom: 2em;
+}
+
+
+div.playlistField {
+  width: 100%;
+  height: 100%;
+  justify-content: space-evenly; /* Honestly not sure if these next 4 lines do anything...*/
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  color: #1DB954;
+  background-color: #1DB954;
+
+}
+
+div.userSearchWrapper {
+  align-content: center;
+}
+
+div.searchForm {
+  width: 25%;
+  margin: auto;
+}
+
+div.userComparisonWrapper {
+  display: flex;
+  flex-direction: row;
+
+}
+
+div.currentUserAnalysis {
+  align-content: center;
+  width: 50%;
+  background-color: aqua;
+
+}
+
+div.otherUserAnalysis {
+  align-content: center;
+  width: 50%;
+  background-color: salmon;
 }
