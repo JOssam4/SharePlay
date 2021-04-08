@@ -10,42 +10,47 @@
  * The logic here is that if the authToken expiration time is past, we should delete the existing localStorage and start anew.
  */
 export const loadState = () => {
-    let stored_expire_time: string | null;
-    let token_expire_time: number;
-    const now = Date.now();
+  // eslint-disable-next-line camelcase
+  let stored_expire_time: string | null;
+  // eslint-disable-next-line camelcase
+  let token_expire_time: number;
+  const now = Date.now();
 
-    stored_expire_time = localStorage.getItem(TOKEN_EXPIRE_TIME);
-    if (stored_expire_time === null) {
-        token_expire_time = Date.now()+1;
-    }
-    else {
-        token_expire_time = parseInt(stored_expire_time);
-    }
+  // eslint-disable-next-line camelcase,prefer-const,@typescript-eslint/no-use-before-define
+  stored_expire_time = localStorage.getItem(TOKEN_EXPIRE_TIME);
+  // eslint-disable-next-line camelcase
+  if (stored_expire_time === null) {
+    // eslint-disable-next-line camelcase
+    token_expire_time = Date.now() + 1;
+  } else {
+    // eslint-disable-next-line camelcase
+    token_expire_time = parseInt(stored_expire_time, 10);
+  }
 
-    if (token_expire_time > now) {
-        try {
-            const serializedState = localStorage.getItem('state');
-            if (serializedState === null) {
-                return undefined;
-            }
-            return JSON.parse(serializedState);
-        } catch (err) {
-            return undefined;
-        }
-    }
-    else {
-        localStorage.clear();
+  // eslint-disable-next-line camelcase
+  if (token_expire_time > now) {
+    try {
+      const serializedState = localStorage.getItem('state');
+      if (serializedState === null) {
         return undefined;
+      }
+      return JSON.parse(serializedState);
+    } catch (err) {
+      return undefined;
     }
+  } else {
+    localStorage.clear();
+    return undefined;
+  }
 };
 
 export const saveState = (state: any) => {
-    try {
-        const serializedState = JSON.stringify(state);
-        localStorage.setItem('state', serializedState);
-    } catch {
-        // ignore write errors
-    }
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem('state', serializedState);
+  } catch {
+    // ignore write errors
+  }
 };
 
-export const TOKEN_EXPIRE_TIME = "TOKEN_EXPIRE_TIME"
+export const TOKEN_EXPIRE_TIME = 'TOKEN_EXPIRE_TIME';
