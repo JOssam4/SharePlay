@@ -165,7 +165,6 @@ class AnalysisScreen extends Component<Props, State> {
             otherUserResp.json().then((otherUserRespjson) => {
               const currentUserIDs: string[] = [];
               const otherUserIDs: string[] = [];
-              console.log(`currentUserRespjson: ${currentUserRespjson}`);
               currentUserRespjson.items.forEach((playlist: Playlist) => {
                 if (playlist.owner.id === this.state.currentUser) {
                   currentUserIDs.push(playlist.id);

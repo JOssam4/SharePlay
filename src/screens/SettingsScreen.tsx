@@ -46,7 +46,6 @@ class SettingsScreen extends Component<Props, State> {
     } else if (usePlaylists === 'false') {
       usePlaylistsBool = false;
     } else {
-      console.log(`usePlaylists value unexpected. Value is: ${usePlaylists}`);
       usePlaylistsBool = true;
     }
 
@@ -78,7 +77,6 @@ class SettingsScreen extends Component<Props, State> {
     } else if (useSavedTracks === 'false' || useSavedTracks === undefined || useSavedTracks === null) {
       useSavedTracksBool = false;
     } else {
-      console.log(`Unexpected value for useSavedTracks. Value is ${useSavedTracks}`);
       useSavedTracksBool = true;
     }
 
@@ -105,15 +103,13 @@ class SettingsScreen extends Component<Props, State> {
   }
 
   handleSwitchChange(event: any) {
-    console.dir(event);
-    event.persist(); // Makes it so I can go into the console and debug the event.
+    // event.persist(); // Makes it so I can go into the console and debug the event.
     const targetName = event.target.name;
     // @ts-ignore
     if (targetName === 'recentlyListenedTo' && this.state[event.target.name] === true) {
       // Have to disable short_term, medium_term, and long_term if parent switch turned off.
       // this.props.dispatch(setUseTopTracks(false));
       this.setUseTopTracks(String(false));
-      console.log('turning off setUseTopTracks');
       this.setState({
         short_term: false, medium_term: false, long_term: false, recentlyListenedTo: false,
       });
@@ -136,8 +132,7 @@ class SettingsScreen extends Component<Props, State> {
   }
 
   handleRadioChange(event: any) {
-    console.dir(event);
-    event.persist(); // Makes it so I can go into the console and debug the event.
+    // event.persist(); // Makes it so I can go into the console and debug the event.
     if (event.target.name === 'short_term') {
       // this.props.dispatch(setUseTopTracks('short_term'));
       this.setUseTopTracks('short_term');

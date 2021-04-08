@@ -29,7 +29,6 @@ export default class UserSearch extends Component<Props, State> {
   }
 
   handleSubmit(event: any) {
-    console.log(`Submitted ${this.state.text}`);
     event.preventDefault(); // prevent browser reload
     this.props.submitHandler(this.state.text);
   }

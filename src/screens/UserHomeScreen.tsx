@@ -63,15 +63,10 @@ class UserHomeScreen extends Component<Props, State> {
       },
     }).then((resp) => {
       resp.json().then((respjson) => {
-        console.log('Email and User ID request successful!');
-        console.log(`Email: ${respjson.email}, userID: ${respjson.id}`);
-        console.dir(respjson);
         this.props.dispatch(setCurrentUser(respjson.id));
         // eslint-disable-next-line react/no-unused-state
         this.setState({ userEmail: respjson.email, currentUser: respjson.id, displayName: respjson.display_name });
       });
-    }).catch((err) => {
-      console.log('Error getting email from API. Error: ', err);
     });
   }
 

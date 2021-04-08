@@ -73,8 +73,7 @@ class SettingsView extends Component<Props, State> {
   }
 
   handleSwitchChange(event: any) {
-    console.dir(event);
-    event.persist(); // Makes it so I can go into the console and debug the event.
+    // event.persist(); // Makes it so I can go into the console and debug the event.
     const targetName = event.target.name;
     // @ts-ignore
     if (targetName === 'useTopTracks' && this.state[event.target.name] === true) {
@@ -82,7 +81,6 @@ class SettingsView extends Component<Props, State> {
       // this.setUseTopTracks(String(false));
       this.props.setUseTopTracks(false);
       this.props.setTopTracksTimeframe(null);
-      console.log('turning off setUseTopTracks');
       /*
       this.setState({
         short_term: false, medium_term: false, long_term: false, recentlyListenedTo: false,
@@ -111,8 +109,7 @@ class SettingsView extends Component<Props, State> {
   }
 
   handleRadioChange(event: any) {
-    console.dir(event);
-    event.persist(); // Makes it so I can go into the console and debug the event.
+    // event.persist(); // Makes it so I can go into the console and debug the event.
     if (event.target.name === 'short_term') {
       // this.setUseTopTracks('short_term');
       this.props.setUseTopTracks(true);

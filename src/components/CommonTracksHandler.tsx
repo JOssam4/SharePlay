@@ -55,24 +55,18 @@ class CommonTracksHandler extends Component<Props, State> {
           },
         }).then((resp) => {
           resp.json().then((respjson) => {
-            console.dir(respjson);
             // @ts-ignore
             respjson.items.forEach((trackObj) => {
               if (trackObj.track && trackObj.track.id && trackObj.track.name) {
                 currentUserTracks.set(trackObj.track.id, trackObj.track.name);
-              } else {
-                console.dir(trackObj);
               }
             });
-            console.dir(currentUserTracks);
-            console.log(`currentUserTracks size: ${currentUserTracks.size}`);
             this.setState({ currentUserTrackMap: currentUserTracks }); // This will cause the state to update as many times as there are playlists, but at least it works. This code severely needs an async/await.
           });
         });
       });
     } else {
       // Current user playlist data not read.
-      console.log('hi');
       // TODO: make it so that if I'm only using my top tracks data then the other user's playlist data is made into a map to increase efficiency.
       this.setState({ currentUserTrackMap: currentUserTracks });
     }
@@ -96,7 +90,6 @@ class CommonTracksHandler extends Component<Props, State> {
                 }
               }
             });
-            console.dir(sharedTracks);
             this.setState({ sharedTracks, finishedComparing: true });
           });
         });
@@ -117,10 +110,8 @@ class CommonTracksHandler extends Component<Props, State> {
       resp.json().then((respjson) => {
         this.fillPlaylist(respjson.id);
       });
-    }).catch((err) => {
-      console.error(err);
-      return null;
-    });
+      // eslint-disable-next-line no-unused-vars
+    }).catch((err) => null);
   }
 
   fillPlaylist(sharedPlaylistID: string): boolean {

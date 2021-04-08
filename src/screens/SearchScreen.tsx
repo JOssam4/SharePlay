@@ -183,7 +183,6 @@ class SearchScreen extends Component<Props, State> {
         );
       }
 
-      console.log('Error occurred. Re-routing you to login page... ');
       return (
         <Redirect to="/" />
       );
