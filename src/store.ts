@@ -18,8 +18,10 @@ store.subscribe(throttle(() => {
   });
   saveSessionState({
     userSearchedFor: store.getState().userSearchedFor,
-    usePlaylists: store.getState().userSearchedFor,
   });
 }, 1000));
 
 export default store;
+
+export type StoreType = ReturnType<typeof store.getState>;
+export type DispatchType = typeof store.dispatch;

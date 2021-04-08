@@ -15,63 +15,41 @@ import type { Playlist, PlaylistJSON } from '../SpotifyAPITypes';
 import CommonTracksHandler from '../components/CommonTracksHandler';
 
 interface Props {
-    authToken: string,
-    currentUser: string,
-    dispatch: Function,
-    history: RouteComponentProps['history'],
-    location: RouteComponentProps['location'],
-    match: RouteComponentProps['match'],
-    staticContext: any,
-    userSearchedFor: string,
+  authToken: string,
+  currentUser: string,
+  dispatch: Function,
+  history: RouteComponentProps['history'],
+  location: RouteComponentProps['location'],
+  match: RouteComponentProps['match'],
+  staticContext: any,
+  userSearchedFor: string,
+  usePlaylists: boolean,
+  useTopTracks: boolean,
+  topTracksTimeframe: string | null,
+  useSavedTracks: boolean,
 }
 
 interface State {
-    currentUser: string,
-    currentUserPlaylistIDs: string[],
-    currentUserPlaylistJSON: PlaylistJSON | null,
-    currentUserTrackMap: Map<string, number>,
-    otherUserPlaylistIDs: string[],
-    otherUserPlaylistJSON: PlaylistJSON | null, // I'll fill this in later,
-    savedTracks: any,
-    sharedPlaylist: any,
-    sharedTracks: Map<string, string>,
-    topTracks: any,
-    usePlaylists: boolean,
-    useSavedTracks: boolean,
-    useTopTracks: any,
-    userSearchedFor: string,
-
+  currentUser: string,
+  currentUserPlaylistIDs: string[],
+  currentUserPlaylistJSON: PlaylistJSON | null,
+  currentUserTrackMap: Map<string, number>,
+  otherUserPlaylistIDs: string[],
+  otherUserPlaylistJSON: PlaylistJSON | null, // I'll fill this in later,
+  savedTracks: any,
+  sharedPlaylist: any,
+  sharedTracks: Map<string, string>,
+  topTracks: any,
+  usePlaylists: boolean,
+  useSavedTracks: boolean,
+  useTopTracks: boolean,
+  topTracksTimeframe: string | null,
+  userSearchedFor: string,
 }
 
 class AnalysisScreen extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    const usePlaylists: string | null = sessionStorage.getItem('usePlaylists');
-    let usePlaylistsBool: boolean;
-    if (usePlaylists === 'true') {
-      usePlaylistsBool = true;
-    } else if (usePlaylists === 'false') { // sessionStorage.setItem("...", false) set the value to "false", which is truthy.
-      usePlaylistsBool = false;
-    } else {
-      console.log(`In analysisScreen, bad value for usePlaylists: ${usePlaylists}`);
-      usePlaylistsBool = false;
-    }
-    let useTopTracks: string | boolean | null = sessionStorage.getItem('useTopTracks');
-    if (useTopTracks === 'false') {
-      useTopTracks = false;
-    }
-
-    const useSavedTracks: string | null = sessionStorage.getItem('useSavedTracks');
-    let useSavedTracksBool: boolean;
-    if (useSavedTracks === 'true') {
-      useSavedTracksBool = true;
-    } else if (useSavedTracks === 'false') {
-      useSavedTracksBool = false;
-    } else {
-      console.log(`In analysisScreen, bad value for useSavedTracks: ${useSavedTracks}`);
-      useSavedTracksBool = false;
-    }
-
     this.state = {
       currentUser: this.props.currentUser,
       userSearchedFor: this.props.userSearchedFor,
@@ -86,12 +64,15 @@ class AnalysisScreen extends Component<Props, State> {
       // eslint-disable-next-line react/no-unused-state
       sharedTracks: new Map(),
 
-      // usePlaylists: this.props.usePlaylists,
-      usePlaylists: usePlaylistsBool,
-      // useTopTracks: this.props.useTopTracks,
-      useTopTracks,
+      usePlaylists: this.props.usePlaylists,
+      // usePlaylists: usePlaylistsBool,
+      useTopTracks: this.props.useTopTracks,
+      // useTopTracks,
 
-      useSavedTracks: useSavedTracksBool,
+      topTracksTimeframe: this.props.topTracksTimeframe,
+
+      // useSavedTracks: useSavedTracksBool,
+      useSavedTracks: this.props.useSavedTracks,
 
       topTracks: [],
 
@@ -130,7 +111,7 @@ class AnalysisScreen extends Component<Props, State> {
 
   getTopTracks() {
     if (this.state.useTopTracks) {
-      fetch(`https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=${this.state.useTopTracks}`, {
+      fetch(`https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=${this.state.topTracksTimeframe}`, {
         headers: {
           Authorization: `Bearer ${this.props.authToken}`,
         },
@@ -242,7 +223,7 @@ class AnalysisScreen extends Component<Props, State> {
               saved tracks
             </h2>,
             <h3 key={2}>
-              For a total of
+              For a total of&nbsp;
               {this.getTotalTracks(this.state.currentUser) + this.state.topTracks.length + this.state.savedTracks.length}
               {' '}
               tracks
@@ -255,7 +236,7 @@ class AnalysisScreen extends Component<Props, State> {
               top tracks
             </h2>,
             <h3>
-              For a total of
+              For a total of&nbsp;
               {this.getTotalTracks(this.state.currentUser) + this.state.topTracks.length}
               {' '}
               tracks
@@ -269,7 +250,7 @@ class AnalysisScreen extends Component<Props, State> {
             saved tracks
           </h2>,
           <h3 key={2}>
-            For a total of
+            For a total of&nbsp;
             {this.getTotalTracks(this.state.currentUser) + this.state.savedTracks.length}
             {' '}
             tracks
@@ -277,7 +258,7 @@ class AnalysisScreen extends Component<Props, State> {
       } else {
         extraInfo = (
           <h3>
-            For a total of
+            For a total of&nbsp;
             {this.getTotalTracks(this.state.currentUser)}
             {' '}
             tracks
@@ -290,16 +271,16 @@ class AnalysisScreen extends Component<Props, State> {
           <NavigationBar activeScreen="analysis" />
           <Jumbotron>
             <h1>
-              Welcome to the Analysis Screen
+              Welcome to the Analysis Screen&nbsp;
               {this.state.currentUser}
               !
             </h1>
             <h2>
-              You have searched for
+              You have searched for&nbsp;
               {this.state.userSearchedFor}
             </h2>
             <h4>
-              You can use the options in your
+              You can use the options in your&nbsp;
               <a href="/me">homepage</a>
               {' '}
               to narrow/broaden your results
@@ -324,7 +305,7 @@ class AnalysisScreen extends Component<Props, State> {
                 playlists
               </h2>
               <h3>
-                For a total of
+                For a total of&nbsp;
                 {this.getTotalTracks(this.state.userSearchedFor)}
                 {' '}
                 total tracks
@@ -353,7 +334,7 @@ class AnalysisScreen extends Component<Props, State> {
               saved tracks
             </h2>,
             <h3>
-              For a total of
+              For a total of&nbsp;
               {this.state.topTracks.length + this.state.savedTracks.length}
               {' '}
               tracks
@@ -366,7 +347,7 @@ class AnalysisScreen extends Component<Props, State> {
               top tracks
             </h2>,
             <h3>
-              For a total of
+              For a total of&nbsp;
               {this.state.topTracks.length}
               {' '}
               tracks
@@ -380,7 +361,7 @@ class AnalysisScreen extends Component<Props, State> {
             saved tracks
           </h2>,
           <h3 key={2}>
-            For a total of
+            For a total of&nbsp;
             {this.state.savedTracks.length}
             {' '}
             tracks
@@ -393,19 +374,18 @@ class AnalysisScreen extends Component<Props, State> {
           <NavigationBar activeScreen="analysis" />
           <Jumbotron>
             <h1>
-              Welcome to the Analysis Screen
+              Welcome to the Analysis Screen&nbsp;
               {this.state.currentUser}
               !
             </h1>
             <h2>
-              You have searched for
+              You have searched for&nbsp;
               {this.state.userSearchedFor}
             </h2>
             <h4>
-              You can use the options in your
+              You can use the options in your&nbsp;
               <a href="/me">homepage</a>
-              {' '}
-              to narrow/broaden your results
+              &nbsp;to narrow/broaden your results
             </h4>
           </Jumbotron>
           <div className="userComparisonWrapper">
@@ -418,14 +398,12 @@ class AnalysisScreen extends Component<Props, State> {
               <h1>{this.state.userSearchedFor}</h1>
               <h2>
                 {this.state.otherUserPlaylistJSON.total}
-                {' '}
-                playlists
+                &nbsp;playlists
               </h2>
               <h3>
-                For a total of
+                For a total of&nbsp;
                 {this.getTotalTracks(this.state.userSearchedFor)}
-                {' '}
-                tracks
+                &nbsp;tracks
               </h3>
             </div>
           </div>
@@ -467,6 +445,10 @@ const mapStateToProps = (state: any) => ({
   authToken: state.authToken,
   currentUser: state.currentUser,
   userSearchedFor: state.userSearchedFor,
+  usePlaylists: state.usePlaylists,
+  useTopTracks: state.useTopTracks,
+  topTracksTimeframe: state.topTracksTimeframe,
+  useSavedTracks: state.useSavedTracks,
 });
 
 export default connect(mapStateToProps)(AnalysisScreen);
