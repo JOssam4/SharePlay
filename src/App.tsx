@@ -13,17 +13,6 @@ import InitialScreen from './screens/InitialScreen';
 import AnalysisScreen from './screens/AnalysisScreen';
 import SettingsScreen from './screens/SettingsScreen';
 
-/*
-interface Props {
-  authToken: string,
-  history: RouteComponentProps['history'],
-  location: RouteComponentProps['location'],
-  match: RouteComponentProps['match'],
-  setAuthToken: Function,
-  staticContext: unknown,
-}
- */
-
 function App() {
   return (
     <Router>

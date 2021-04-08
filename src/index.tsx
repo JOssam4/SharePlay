@@ -10,21 +10,14 @@ import store from './store';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
-/*
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
- */
-
 ReactDOM.render((
-  <Provider store={store}>
-    <BrowserRouter>
-      <Route path="/" component={App} />
-    </BrowserRouter>
-  </Provider>
+  <React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Route path="/" component={App} />
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>
 ),
 document.getElementById('root'));
 
