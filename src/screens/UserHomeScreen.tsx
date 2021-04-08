@@ -1,12 +1,10 @@
 /**
- * This component should be what renders when the user signs in. Therefore, it needs access to the auth token,
+ * This component is what renders when the user signs in. Therefore, it needs access to the auth token
  * and user data.
- * I'm not sure yet if it should have its own ReactRouter path.
  */
 
 import React, { Component } from 'react';
 import { Jumbotron } from 'react-bootstrap';
-// import Playlists from '../components/Playlists';
 
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -45,6 +43,7 @@ class UserHomeScreen extends Component<Props, State> {
       currentUser: null,
       // eslint-disable-next-line react/no-unused-state
       userEmail: null,
+      // eslint-disable-next-line react/no-unused-state
       displayName: null,
       // eslint-disable-next-line react/no-unused-state
       shouldShowPlaylists: this.props.showPlaylists,
@@ -83,26 +82,6 @@ class UserHomeScreen extends Component<Props, State> {
     // This code here can probably be safely deleted but it's not harming anyone so I'll leave it in.
   }
 
-  /*
-    render() {
-        return (
-            <div className="signed_in_content_wrapper">
-                <NavigationBar activeScreen='me'/>
-                <Jumbotron>
-                    <h1>Welcome to SharePlay {this.state.currentUser}</h1>
-                    <h3>With SharePlay, you can find tracks/artists that both you and a friend enjoy</h3>
-                    <h5>Let's start by getting your playlists.</h5>
-                    <Button varient="primary" disabled={this.state.shouldShowPlaylists} onClick={this.loadPlaylists}>Get my playlists</Button>
-                </Jumbotron>
-                { (this.state.shouldShowPlaylists) &&
-                    <Playlists userID={this.state.currentUser} authToken={this.state.authToken}/>
-                }
-            </div>
-        )
-    }
-
-     */
-
   render() {
     return (
       <div className="signed_in_content_wrapper">
@@ -110,7 +89,7 @@ class UserHomeScreen extends Component<Props, State> {
         <Jumbotron>
           <h1>
             Welcome to SharePlay&nbsp;
-            {this.state.displayName}
+            {this.state.currentUser}
           </h1>
           <h3>With SharePlay, you can find tracks/artists that both you and a friend enjoy</h3>
           <h5>This is your home screen. You can return here whenever you want</h5>
