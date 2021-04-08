@@ -145,13 +145,13 @@ class SearchScreen extends Component<Props, State> {
                 <UserSearch submitHandler={this.submitHandler} />
                 <Jumbotron>
                   <h1>
-                    You have searched for
+                    You have searched for&nbsp;
                     {this.state.userSearchedFor}
                   </h1>
                   <h2>User Found!</h2>
                   {this.getUserCard()}
                   <h4>
-                    Head over to the
+                    Head over to the&nbsp;
                     <a href="/analysis">Analysis</a>
                     {' '}
                     page whenever you&apos;re ready
