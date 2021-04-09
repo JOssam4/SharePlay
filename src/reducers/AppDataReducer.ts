@@ -2,9 +2,18 @@ import {
   SET_AUTHTOKEN, SET_CURRENT_USER, SET_USER_SEARCHED_FOR, SHOW_PLAYLISTS, SET_USE_PLAYLISTS, SET_USE_TOP_TRACKS, SET_USE_SAVED_TRACKS, SET_TOP_TRACKS_TIMEFRAME,
 } from '../actions';
 
-function appDataReducer(state = {
-  authToken: null, currentUser: null, showPlaylists: false, userSearchedFor: null, usePlaylists: true, useTopTracks: true, topTracksTimeframe: 'short_term', useSavedTracks: false,
-}, action: any) {
+export const initialState = {
+  authToken: null,
+  currentUser: null,
+  showPlaylists: false,
+  userSearchedFor: null,
+  usePlaylists: true,
+  useTopTracks: false,
+  topTracksTimeframe: null,
+  useSavedTracks: true,
+};
+
+function appDataReducer(state = initialState, action: any) {
   switch (action.type) {
     case SET_AUTHTOKEN:
       return { ...state, authToken: action.authToken };
