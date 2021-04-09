@@ -11,7 +11,7 @@ import UserHomeScreen from './screens/UserHomeScreen';
 import SearchScreen from './screens/SearchScreen';
 import InitialScreen from './screens/InitialScreen';
 import AnalysisScreen from './screens/AnalysisScreen';
-import SettingsScreen from './screens/SettingsScreen';
+import PageNotFoundScreen from './screens/PageNotFoundScreen';
 
 function App() {
   return (
@@ -21,8 +21,8 @@ function App() {
         <Route exact path="/me" component={UserHomeScreen} />
         <Route exact path="/search" component={SearchScreen} />
         <Route exact path="/analysis" component={AnalysisScreen} />
-        <Route exact path="/settings" component={SettingsScreen} />
         <Route exact path="/" component={InitialScreen} />
+        <Route component={PageNotFoundScreen} />
       </Switch>
     </Router>
   );
