@@ -9,7 +9,10 @@ import { connect } from 'react-redux';
 import { Jumbotron } from 'react-bootstrap';
 import { RouteComponentProps, Link, Redirect } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
-import type { Playlist, PlaylistJSON } from '../SpotifyAPITypes';
+import type {
+  // eslint-disable-next-line no-unused-vars
+  Playlist, PlaylistJSON, TrackItems, TrackType, TracksRespWithAddedTime, TracksRespWithoutAddedTime,
+} from '../SpotifyAPITypes';
 
 // import SharedDataView from '../components/SharedDataView';
 import CommonTracksHandler from '../components/CommonTracksHandler';
@@ -36,7 +39,7 @@ interface State {
   currentUserTrackMap: Map<string, number>,
   otherUserPlaylistIDs: string[],
   otherUserPlaylistJSON: PlaylistJSON | null, // I'll fill this in later,
-  savedTracks: any,
+  savedTracks: { id: string, name: string }[],
   sharedPlaylist: any,
   sharedTracks: Map<string, string>,
   topTracks: any,
@@ -116,11 +119,10 @@ class AnalysisScreen extends Component<Props, State> {
           Authorization: `Bearer ${this.props.authToken}`,
         },
       }).then((resp) => {
-        resp.json().then((topTracksObject) => {
-          const trackIds: {id: number, name: string}[] = [];
+        resp.json().then((topTracksObject: TracksRespWithoutAddedTime) => {
+          const trackIds: {id: string, name: string}[] = [];
           const topTracks = topTracksObject.items;
-          // @ts-ignore
-          topTracks.forEach((track) => {
+          topTracks.forEach((track: TrackType) => {
             trackIds.push({ id: track.id, name: track.name });
           });
           this.setState({ topTracks: trackIds });
@@ -137,11 +139,11 @@ class AnalysisScreen extends Component<Props, State> {
         },
       })
         .then((resp) => resp.json())
-        .then((savedTracksObject) => {
+        .then((savedTracksObject: TracksRespWithAddedTime) => {
           const savedTracks = savedTracksObject.items;
-          const trackIds: {id: number, name: string}[] = [];
-          // @ts-ignore
-          savedTracks.forEach((track) => {
+          const trackIds: {id: string, name: string}[] = [];
+          savedTracks.forEach((trackItem: TrackItems) => {
+            const { track } = trackItem;
             trackIds.push({ id: track.id, name: track.name });
           });
           this.setState({ savedTracks: trackIds });
@@ -216,54 +218,46 @@ class AnalysisScreen extends Component<Props, State> {
           extraInfo = [
             <h2 key={0}>
               {this.state.topTracks.length}
-              {' '}
-              top tracks
+              &nbsp;top tracks
             </h2>,
             <h2 key={1}>
               {this.state.savedTracks.length}
-              {' '}
-              saved tracks
+              &nbsp;saved tracks
             </h2>,
             <h3 key={2}>
               For a total of&nbsp;
               {this.getTotalTracks(this.state.currentUser) + this.state.topTracks.length + this.state.savedTracks.length}
-              {' '}
-              tracks
+              &nbsp;tracks
             </h3>];
         } else {
           extraInfo = [
             <h2>
               {this.state.topTracks.length}
-              {' '}
-              top tracks
+              &nbsp;top tracks
             </h2>,
             <h3>
               For a total of&nbsp;
               {this.getTotalTracks(this.state.currentUser) + this.state.topTracks.length}
-              {' '}
-              tracks
+              &nbsp;tracks
             </h3>];
         }
       } else if (this.state.useSavedTracks) {
         extraInfo = [
           <h2 key={1}>
             {this.state.savedTracks.length}
-            {' '}
-            saved tracks
+            &nbsp;saved tracks
           </h2>,
           <h3 key={2}>
             For a total of&nbsp;
             {this.getTotalTracks(this.state.currentUser) + this.state.savedTracks.length}
-            {' '}
-            tracks
+            &nbsp;tracks
           </h3>];
       } else {
         extraInfo = (
           <h3>
             For a total of&nbsp;
             {this.getTotalTracks(this.state.currentUser)}
-            {' '}
-            tracks
+            &nbsp;tracks
           </h3>
         );
       }
@@ -284,8 +278,7 @@ class AnalysisScreen extends Component<Props, State> {
             <h4>
               You can use the options in your&nbsp;
               <Link to="/me">homepage</Link>
-              {' '}
-              to narrow/broaden your results
+              &nbsp;to narrow/broaden your results
             </h4>
           </Jumbotron>
           <div className="userComparisonWrapper">
@@ -293,8 +286,7 @@ class AnalysisScreen extends Component<Props, State> {
               <h1>{this.state.currentUser}</h1>
               <h2>
                 {this.state.currentUserPlaylistJSON.total}
-                {' '}
-                playlists
+                &nbsp;playlists
               </h2>
               {extraInfo}
 
@@ -303,14 +295,12 @@ class AnalysisScreen extends Component<Props, State> {
               <h1>{this.state.userSearchedFor}</h1>
               <h2>
                 {this.state.otherUserPlaylistJSON?.total}
-                {' '}
-                playlists
+                &nbsp;playlists
               </h2>
               <h3>
                 For a total of&nbsp;
                 {this.getTotalTracks(this.state.userSearchedFor)}
-                {' '}
-                total tracks
+                &nbsp;total tracks
               </h3>
             </div>
           </div>
@@ -327,46 +317,39 @@ class AnalysisScreen extends Component<Props, State> {
           extraInfo = [
             <h2 key={0}>
               {this.state.topTracks.length}
-              {' '}
-              top tracks
+              &nbsp;top tracks
             </h2>,
             <h2 key={1}>
               {this.state.savedTracks.length}
-              {' '}
-              saved tracks
+              &nbsp;saved tracks
             </h2>,
             <h3>
               For a total of&nbsp;
               {this.state.topTracks.length + this.state.savedTracks.length}
-              {' '}
-              tracks
+              &nbsp;tracks
             </h3>];
         } else {
           extraInfo = [
             <h2>
               {this.state.topTracks.length}
-              {' '}
-              top tracks
+              &nbsp;top tracks
             </h2>,
             <h3>
               For a total of&nbsp;
               {this.state.topTracks.length}
-              {' '}
-              tracks
+              &nbsp;tracks
             </h3>];
         }
       } else if (this.state.useSavedTracks) {
         extraInfo = [
           <h2 key={1}>
             {this.state.savedTracks.length}
-            {' '}
-            saved tracks
+            &nbsp;saved tracks
           </h2>,
           <h3 key={2}>
             For a total of&nbsp;
             {this.state.savedTracks.length}
-            {' '}
-            tracks
+            &nbsp;tracks
           </h3>];
       } else {
         extraInfo = <h3>For a total of 0 tracks</h3>;
@@ -422,8 +405,7 @@ class AnalysisScreen extends Component<Props, State> {
           <h1>
             Sorry,
             {this.state.userSearchedFor}
-            {' '}
-            doesn&apos;t have any public playlists :(
+            &nbsp;doesn&apos;t have any public playlists :(
           </h1>
           <h3>Come back when you&apos;ve searched for another user.</h3>
         </div>

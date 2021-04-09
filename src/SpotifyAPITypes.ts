@@ -1,4 +1,3 @@
-
 type Person = {
     display_name: string,
     external_urls: {spotify: string},
@@ -33,6 +32,89 @@ type PlaylistJSON = {
     total: number
 }
 
+type externalUrl = {
+    spotify: string
+}
 
+type imageType = {
+    height: number,
+    url: string,
+    width: number,
+}
 
-export type { Person, Playlist, PlaylistJSON };
+type ArtistType = {
+    external_urls: externalUrl,
+    href: string,
+    id: string,
+    name: string,
+    type: string,
+    uri: string,
+}
+
+type AlbumType = {
+    album_type: string,
+    artists: ArtistType[],
+    available_markets: string[],
+    external_urls: externalUrl,
+    href: string,
+    id: string,
+    images: imageType[],
+    name: string,
+    release_date: string,
+    release_date_precision: string,
+    total_tracks: number,
+    type: string,
+    uri: string,
+
+}
+
+type TrackType = {
+    album: AlbumType,
+    artists: ArtistType[],
+    available_markets: string[],
+    disc_number: number
+    duration_ms: number
+    explicit: boolean,
+    external_ids: {
+        isrc: string,
+    },
+    external_urls: externalUrl,
+    href: string,
+    id: string,
+    is_local: boolean,
+    name: string,
+    popularity: number,
+    preview_url: string,
+    track_number: number,
+    type: string,
+    uri: string,
+}
+
+type TrackItems = {
+    added_at: string,
+    track: TrackType,
+}
+
+type TracksRespWithAddedTime = {
+    href: string,
+    items: TrackItems[],
+    limit: number
+    next: string,
+    offset: number,
+    previous: any,
+    total: number,
+}
+
+type TracksRespWithoutAddedTime = {
+    href: string,
+    items: TrackType[],
+    limit: number
+    next: string,
+    offset: number,
+    previous: any,
+    total: number,
+}
+
+export type {
+  Person, Playlist, PlaylistJSON, TrackType, ArtistType, AlbumType, TrackItems, TracksRespWithAddedTime, TracksRespWithoutAddedTime,
+};
