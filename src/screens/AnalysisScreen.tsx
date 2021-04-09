@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Jumbotron } from 'react-bootstrap';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
 import type { Playlist, PlaylistJSON } from '../SpotifyAPITypes';
 
@@ -280,7 +280,7 @@ class AnalysisScreen extends Component<Props, State> {
             </h2>
             <h4>
               You can use the options in your&nbsp;
-              <a href="/me">homepage</a>
+              <Link to="/me">homepage</Link>
               {' '}
               to narrow/broaden your results
             </h4>
@@ -383,7 +383,7 @@ class AnalysisScreen extends Component<Props, State> {
             </h2>
             <h4>
               You can use the options in your&nbsp;
-              <a href="/me">homepage</a>
+              <Link to="/me">homepage</Link>
               &nbsp;to narrow/broaden your results
             </h4>
           </Jumbotron>

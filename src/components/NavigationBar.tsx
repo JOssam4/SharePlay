@@ -38,9 +38,6 @@ function NavigationBar({ activeScreen, userSearchedFor }: Props) {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      {/*
-      <a className="navbar-brand">SharePlay</a>
-      */}
       <Link className="navbar-brand" to="/" onClick={(event) => event.preventDefault()}>SharePlay</Link>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">

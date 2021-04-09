@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Card } from 'react-bootstrap';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { Redirect, RouteComponentProps, Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import NavigationBar from '../components/NavigationBar';
@@ -155,9 +155,8 @@ class SearchScreen extends Component<Props, State> {
                   <br />
                   <h4>
                     Head over to the&nbsp;
-                    <a href="/analysis">Analysis</a>
-                    {' '}
-                    page whenever you&apos;re ready
+                    <Link to="/analysis">Analysis</Link>
+                    &nbsp;page whenever you&apos;re ready
                   </h4>
                 </div>
               </div>

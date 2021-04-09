@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 // import { Jumbotron } from 'react-bootstrap';
 
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import NavigationBar from '../components/NavigationBar';
@@ -90,8 +90,8 @@ class UserHomeScreen extends Component<Props, State> {
           <h5>This is your home screen. You can return here whenever you want</h5>
           <h5>
             Whenever you&apos;re ready, head over to the&nbsp;
-            <a href="/search">Search</a>
-              &nbsp;tab.
+            <Link to="/search">Search</Link>
+            &nbsp;tab.
           </h5>
         </div>
         <div className="optionsWrapper">
