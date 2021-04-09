@@ -43,10 +43,6 @@ interface State {
   sharedPlaylist: any,
   sharedTracks: Map<string, string>,
   topTracks: any,
-  usePlaylists: boolean,
-  useSavedTracks: boolean,
-  useTopTracks: boolean,
-  topTracksTimeframe: string | null,
   userSearchedFor: string,
 }
 
@@ -66,17 +62,6 @@ class AnalysisScreen extends Component<Props, State> {
       currentUserTrackMap: new Map(),
       // eslint-disable-next-line react/no-unused-state
       sharedTracks: new Map(),
-
-      usePlaylists: this.props.usePlaylists,
-      // usePlaylists: usePlaylistsBool,
-      useTopTracks: this.props.useTopTracks,
-      // useTopTracks,
-
-      topTracksTimeframe: this.props.topTracksTimeframe,
-
-      // useSavedTracks: useSavedTracksBool,
-      useSavedTracks: this.props.useSavedTracks,
-
       topTracks: [],
 
       savedTracks: [],
@@ -89,10 +74,10 @@ class AnalysisScreen extends Component<Props, State> {
   componentDidMount() {
     if (this.state.currentUser && this.state.userSearchedFor) {
       this.getUserPlaylistData();
-      if (this.state.useTopTracks) {
+      if (this.props.useTopTracks) {
         this.getTopTracks();
       }
-      if (this.state.useSavedTracks) {
+      if (this.props.useSavedTracks) {
         this.getSavedTracks();
       }
     }
@@ -113,8 +98,8 @@ class AnalysisScreen extends Component<Props, State> {
   }
 
   getTopTracks() {
-    if (this.state.useTopTracks) {
-      fetch(`https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=${this.state.topTracksTimeframe}`, {
+    if (this.props.useTopTracks) {
+      fetch(`https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=${this.props.topTracksTimeframe}`, {
         headers: {
           Authorization: `Bearer ${this.props.authToken}`,
         },
@@ -132,7 +117,7 @@ class AnalysisScreen extends Component<Props, State> {
   }
 
   getSavedTracks() {
-    if (this.state.useSavedTracks) {
+    if (this.props.useSavedTracks) {
       fetch('https://api.spotify.com/v1/me/tracks', {
         headers: {
           Authorization: `Bearer ${this.props.authToken}`,
@@ -152,7 +137,7 @@ class AnalysisScreen extends Component<Props, State> {
   }
 
   getUserPlaylistData() {
-    if (this.state.currentUser && this.state.userSearchedFor && this.state.usePlaylists) {
+    if (this.state.currentUser && this.state.userSearchedFor && this.props.usePlaylists) {
       fetch('https://api.spotify.com/v1/me/playlists?limit=50', {
         headers: {
           Authorization: `Bearer ${this.props.authToken}`,
@@ -213,8 +198,8 @@ class AnalysisScreen extends Component<Props, State> {
     }
     if (this.state.currentUserPlaylistJSON && this.state.otherUserPlaylistIDs.length > 0) {
       let extraInfo;
-      if (this.state.useTopTracks) {
-        if (this.state.useSavedTracks) {
+      if (this.props.useTopTracks) {
+        if (this.props.useSavedTracks) {
           extraInfo = [
             <h2 key={0}>
               {this.state.topTracks.length}
@@ -241,7 +226,7 @@ class AnalysisScreen extends Component<Props, State> {
               &nbsp;tracks
             </h3>];
         }
-      } else if (this.state.useSavedTracks) {
+      } else if (this.props.useSavedTracks) {
         extraInfo = [
           <h2 key={1}>
             {this.state.savedTracks.length}
@@ -312,8 +297,8 @@ class AnalysisScreen extends Component<Props, State> {
     if (this.state.currentUser && this.state.otherUserPlaylistJSON) {
       // Only use my top tracks and saved tracks, not my playlists
       let extraInfo;
-      if (this.state.useTopTracks) {
-        if (this.state.useSavedTracks) {
+      if (this.props.useTopTracks) {
+        if (this.props.useSavedTracks) {
           extraInfo = [
             <h2 key={0}>
               {this.state.topTracks.length}
@@ -340,7 +325,7 @@ class AnalysisScreen extends Component<Props, State> {
               &nbsp;tracks
             </h3>];
         }
-      } else if (this.state.useSavedTracks) {
+      } else if (this.props.useSavedTracks) {
         extraInfo = [
           <h2 key={1}>
             {this.state.savedTracks.length}
