@@ -171,7 +171,7 @@ class SearchScreen extends Component<Props, State> {
               <NavigationBar activeScreen="search" />
               <UserSearch submitHandler={this.submitHandler} />
               <div className="userDoesntExist">
-                <h1>Hmm... It doesn&apos;t look like that user exists!</h1>
+                <h1>User not found. Try again</h1>
               </div>
             </div>
           );
