@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Jumbotron, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 
 import { connect } from 'react-redux';
@@ -10,6 +10,8 @@ import UserSearch from '../components/UserSearch';
 import { setUserSearchedFor } from '../actions';
 
 // import Playlists from "../Playlists"
+
+import '../styles/SearchScreen.css';
 
 interface Props {
     authToken: string,
@@ -143,20 +145,21 @@ class SearchScreen extends Component<Props, State> {
               <div className="userSearchWrapper">
                 <NavigationBar activeScreen="search" />
                 <UserSearch submitHandler={this.submitHandler} />
-                <Jumbotron>
+                <div className="results">
                   <h1>
                     You have searched for&nbsp;
                     {this.state.userSearchedFor}
                   </h1>
                   <h2>User Found!</h2>
                   {this.getUserCard()}
+                  <br />
                   <h4>
                     Head over to the&nbsp;
                     <a href="/analysis">Analysis</a>
                     {' '}
                     page whenever you&apos;re ready
                   </h4>
-                </Jumbotron>
+                </div>
               </div>
             );
           }
@@ -168,9 +171,9 @@ class SearchScreen extends Component<Props, State> {
             <div className="userSearchWrapper">
               <NavigationBar activeScreen="search" />
               <UserSearch submitHandler={this.submitHandler} />
-              <Jumbotron>
+              <div className="userDoesntExist">
                 <h1>Hmm... It doesn&apos;t look like that user exists!</h1>
-              </Jumbotron>
+              </div>
             </div>
           );
         }

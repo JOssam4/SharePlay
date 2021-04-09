@@ -41,7 +41,7 @@ export default class UserSearch extends Component<Props, State> {
             <Form.Label>Search for Spotify users here</Form.Label>
             <Form.Control type="text" placeholder="Search for a user here" onChange={this.handleChange} />
           </Form.Group>
-          <Button className="btn-block" variant="primary" type="submit">Submit</Button>
+          <Button className="btn-block" variant="primary" type="submit" id="submit-button">Submit</Button>
         </Form>
       </div>
     );

@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { Jumbotron } from 'react-bootstrap';
+// import { Jumbotron } from 'react-bootstrap';
 
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -81,7 +81,7 @@ class UserHomeScreen extends Component<Props, State> {
     return (
       <div className="signed_in_content_wrapper">
         <NavigationBar activeScreen="me" />
-        <Jumbotron>
+        <div className="homescreen-welcome">
           <h1>
             Welcome to SharePlay&nbsp;
             {this.state.currentUser}
@@ -93,7 +93,7 @@ class UserHomeScreen extends Component<Props, State> {
             <a href="/search">Search</a>
               &nbsp;tab.
           </h5>
-        </Jumbotron>
+        </div>
         <div className="optionsWrapper">
           <h3 className="optionsText">Specify the data you want to use below</h3>
           <SettingsView />

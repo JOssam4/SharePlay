@@ -43,3 +43,8 @@ form.userSearchForm input[type=submit] {
     text-align: center;
     font-size: 1.5em;
 }
+
+#submit-button {
+    background-color: black;
+    border-color: black;
+}
