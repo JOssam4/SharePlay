@@ -13,7 +13,7 @@ export default function InitialScreen() {
       <h6>Note: SharePlay does not store your login information.</h6>
       <footer className="footer">
         <p className="powered-by-spotify">
-          Powered by
+          Powered by&nbsp;
           <a
             className="spotify-link"
             href="https://spotify.com"
