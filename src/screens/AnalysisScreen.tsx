@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Jumbotron } from 'react-bootstrap';
-import { RouteComponentProps, Link } from 'react-router-dom';
+import { RouteComponentProps, Link, Redirect } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
 import type { Playlist, PlaylistJSON } from '../SpotifyAPITypes';
 
@@ -206,6 +206,9 @@ class AnalysisScreen extends Component<Props, State> {
 
   // Gonna go for a kind of split-screen look here. Current user on left, searched user on right.
   render() {
+    if (!this.props.authToken) {
+      return <Redirect to="/" />;
+    }
     if (this.state.currentUserPlaylistJSON && this.state.otherUserPlaylistIDs.length > 0) {
       let extraInfo;
       if (this.state.useTopTracks) {
