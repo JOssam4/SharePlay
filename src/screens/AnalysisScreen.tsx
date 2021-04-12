@@ -13,6 +13,7 @@ import type {
   // eslint-disable-next-line no-unused-vars
   Playlist, PlaylistJSON, TrackItems, TrackType, TracksRespWithAddedTime, TracksRespWithoutAddedTime,
 } from '../Helpers/SpotifyAPITypes';
+import { MinifiedTrackType, MapTrackValue } from '../Helpers/OtherTypes';
 
 // import SharedDataView from '../components/SharedDataView';
 import CommonTracksHandler from '../components/CommonTracksHandler';
@@ -41,10 +42,10 @@ interface State {
   currentUserTrackMap: Map<string, number>,
   otherUserPlaylistIDs: string[],
   otherUserPlaylistJSON: PlaylistJSON | null, // I'll fill this in later,
-  savedTracks: { id: string, name: string }[],
+  savedTracks: MinifiedTrackType[],
   sharedPlaylist: any,
-  sharedTracks: Map<string, string>,
-  topTracks: any,
+  sharedTracks: Map<string, MapTrackValue>,
+  topTracks: MinifiedTrackType[],
   userSearchedFor: string,
 }
 

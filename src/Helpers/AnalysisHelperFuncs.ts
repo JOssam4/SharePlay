@@ -1,9 +1,10 @@
 import {
+  MinArtistType,
   Playlist,
   PlaylistJSON,
   TrackItems, TracksRespWithAddedTime, TracksRespWithoutAddedTime, TrackType,
 } from './SpotifyAPITypes';
-import { TopTracksType } from './OtherTypes';
+import { MinifiedTrackType } from './OtherTypes';
 
 type playlistData = {
   currentUserPlaylistJSON: PlaylistJSON | null,
@@ -51,6 +52,10 @@ async function getUserPlaylistData(authToken: string, currentUser: string, userS
   };
 }
 
+function getArtistNameArray(artists: MinArtistType[]) {
+  return artists.map((artist: MinArtistType) => artist.name);
+}
+
 async function getTopTracks(authToken: string, timeframe: string) {
   const resp = await fetch(`https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=${timeframe}`, {
     headers: {
@@ -58,16 +63,16 @@ async function getTopTracks(authToken: string, timeframe: string) {
     },
   });
   const topTracksObject: TracksRespWithoutAddedTime = await resp.json();
-  const trackIDs: TopTracksType[] = [];
+  const trackIDs: MinifiedTrackType[] = [];
   const topTracks = topTracksObject.items;
   topTracks.forEach((track: TrackType) => {
-    trackIDs.push({ id: track.id, name: track.name });
+    trackIDs.push({ id: track.id, name: track.name, artists: getArtistNameArray(track.artists) });
   });
   return trackIDs;
 }
 
-async function getSavedTracks(authToken: string): Promise<TopTracksType[]> {
-  const trackIDs: TopTracksType[] = [];
+async function getSavedTracks(authToken: string): Promise<MinifiedTrackType[]> {
+  const trackIDs: MinifiedTrackType[] = [];
   let resp = await fetch('https://api.spotify.com/v1/me/tracks?limit=50', {
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -75,7 +80,7 @@ async function getSavedTracks(authToken: string): Promise<TopTracksType[]> {
   });
   let respjson: TracksRespWithAddedTime = await resp.json();
   respjson.items.forEach((trackItem: TrackItems) => {
-    trackIDs.push({ id: trackItem.track.id, name: trackItem.track.name });
+    trackIDs.push({ id: trackItem.track.id, name: trackItem.track.name, artists: getArtistNameArray(trackItem.track.artists) });
   });
   let tracksRemaining = respjson.total - 50; // since we can only get 50 at a time, use this to keep track of how many more we need to get
   let offset = 0;
@@ -90,7 +95,7 @@ async function getSavedTracks(authToken: string): Promise<TopTracksType[]> {
     // eslint-disable-next-line no-await-in-loop
     respjson = await resp.json();
     respjson.items.forEach((trackItem: TrackItems) => {
-      trackIDs.push({ id: trackItem.track.id, name: trackItem.track.name });
+      trackIDs.push({ id: trackItem.track.id, name: trackItem.track.name, artists: getArtistNameArray(trackItem.track.artists) });
     });
     tracksRemaining -= 50;
   }

@@ -6,25 +6,34 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { TopTracksType } from '../Helpers/OtherTypes';
+import { MinifiedTrackType, MapTrackValue } from '../Helpers/OtherTypes';
 import SharedDataView from './SharedDataView';
+import { MinArtistType } from '../Helpers/SpotifyAPITypes';
 
 interface Props {
     authToken: string,
     currentUser: string,
     currentUserPlaylistIDs: string[],
     otherUserPlaylistIDs: string[],
-    topTracks: {id: string, name: string}[],
-    savedTracks: {id: string, name: string}[],
+    topTracks: MinifiedTrackType[],
+    savedTracks: MinifiedTrackType[],
     userSearchedFor: string,
 }
 
 interface State {
-    currentUserTrackMap: Map<string, string>
+    currentUserTrackMap: Map<string, MapTrackValue>
     finishedComparing: boolean,
     sharedPlaylist: any,
-    sharedTracks: Map<string, string>
+    sharedTracks: Map<string, MapTrackValue>
 }
+
+type trackObject = {
+  track: {
+    artists: MinArtistType[],
+    id: string,
+    name: string,
+  },
+};
 
 class CommonTracksHandler extends Component<Props, State> {
   constructor(props: Props) {
@@ -45,13 +54,13 @@ class CommonTracksHandler extends Component<Props, State> {
   loadTrackData() {
     const currentUserTracks = new Map();
     if (this.props.savedTracks) {
-      this.props.savedTracks.forEach((track: TopTracksType) => {
-        currentUserTracks.set(track.id, track.name);
+      this.props.savedTracks.forEach((track: MinifiedTrackType) => {
+        currentUserTracks.set(track.id, { name: track.name, artists: track.artists });
       });
     }
     if (this.props.topTracks) {
       this.props.topTracks.forEach((track) => {
-        currentUserTracks.set(track.id, track.name);
+        currentUserTracks.set(track.id, { name: track.name, artists: track.artists });
       });
     }
     if (this.props.currentUserPlaylistIDs.length > 0) {
@@ -78,22 +87,43 @@ class CommonTracksHandler extends Component<Props, State> {
       this.setState({ currentUserTrackMap: currentUserTracks });
     }
   }
+  /*
+  async compareTracks() {
+    const sharedTracks = new Map();
+    if (this.state.currentUserTrackMap) {
+      this.props.otherUserPlaylistIDs.forEach(async (playlistID: string) => {
+        const resp = await fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks?fields=items(track.id,track.name,track.artists)`, {
+          headers: {
+            Authorization: `Bearer ${this.props.authToken}`,
+          },
+        });
+        const respjson = await resp.json();
+        respjson.items.forEach((trackObj: trackObject) => {
+          if (this.state.currentUserTrackMap.has(trackObj.track.id)) {
+            sharedTracks.set(trackObj.track.id, { name: trackObj.track.name, artists: trackObj.track.artists });
+          }
+        });
+      });
+      this.setState({ sharedTracks, finishedComparing: true });
+    }
+  }
+  */
 
   compareTracks() {
     const sharedTracks = new Map();
     if (this.state.currentUserTrackMap) {
-      this.props.otherUserPlaylistIDs.forEach((playlistID) => {
-        fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks?fields=items(track.id,track.name)`, {
+      this.props.otherUserPlaylistIDs.forEach((playlistID: string) => {
+        fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks?fields=items(track.id,track.name,track.artists)`, {
           headers: {
             Authorization: `Bearer ${this.props.authToken}`,
           },
         }).then((resp) => {
           resp.json().then((respjson) => {
             // @ts-ignore
-            respjson.items.forEach((trackObj) => {
+            respjson.items.forEach((trackObj: trackObject) => {
               if (trackObj.track && trackObj.track.id) {
                 if (this.state.currentUserTrackMap.has(trackObj.track.id)) {
-                  sharedTracks.set(trackObj.track.id, trackObj.track.name);
+                  sharedTracks.set(trackObj.track.id, { name: trackObj.track.name, artists: trackObj.track.artists });
                 }
               }
             });

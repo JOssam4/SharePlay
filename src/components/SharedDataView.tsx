@@ -4,15 +4,17 @@ import PropTypes from 'prop-types';
 // import { connect } from 'react-redux';
 
 import { Card, Button } from 'react-bootstrap';
+import { MapTrackValue } from '../Helpers/OtherTypes';
+import { MinArtistType } from '../Helpers/SpotifyAPITypes';
 
 interface Props {
     playlistGenerator: Function,
-    sharedTracks: Map<string, string>,
+    sharedTracks: Map<string, MapTrackValue>,
 }
 
 interface State {
     playlistGenerated: boolean,
-    sharedTracks: Map<string, string>,
+    sharedTracks: Map<string, MapTrackValue>,
 }
 
 export default class SharedDataView extends Component<Props, State> {
@@ -28,10 +30,15 @@ export default class SharedDataView extends Component<Props, State> {
     // eslint-disable-next-line no-undef
     const cards: JSX.Element[] = [];
     let counter = 0; // for the keys
-    this.state.sharedTracks.forEach((trackName) => {
+    this.state.sharedTracks.forEach((mapTrack) => {
+      const artists = mapTrack.artists.map((artist: MinArtistType) => artist.name).join(', ');
       cards.push(
         <Card key={counter}>
-          <Card.Body>{trackName}</Card.Body>
+          <Card.Body>
+            {mapTrack.name}
+            &nbsp;-&nbsp;
+            {artists}
+          </Card.Body>
         </Card>,
       );
       counter += 1;
