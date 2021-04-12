@@ -17,6 +17,7 @@ import { MinifiedTrackType, MapTrackValue } from '../Helpers/OtherTypes';
 
 // import SharedDataView from '../components/SharedDataView';
 import CommonTracksHandler from '../components/CommonTracksHandler';
+import AnalysisExtraInfo from '../components/AnalysisExtraInfo';
 
 import { getUserPlaylistData, getTopTracks, getSavedTracks } from '../Helpers/AnalysisHelperFuncs';
 
@@ -109,56 +110,6 @@ class AnalysisScreen extends Component<Props, State> {
       return <Redirect to="/" />;
     }
     if (this.state.currentUserPlaylistJSON && this.state.otherUserPlaylistIDs.length > 0) {
-      let extraInfo;
-      if (this.props.useTopTracks) {
-        if (this.props.useSavedTracks) {
-          extraInfo = [
-            <h2 key={0}>
-              {this.state.topTracks.length}
-              &nbsp;top tracks
-            </h2>,
-            <h2 key={1}>
-              {this.state.savedTracks.length}
-              &nbsp;saved tracks
-            </h2>,
-            <h3 key={2}>
-              For a total of&nbsp;
-              {this.getTotalTracks(this.state.currentUser) + this.state.topTracks.length + this.state.savedTracks.length}
-              &nbsp;tracks
-            </h3>];
-        } else {
-          extraInfo = [
-            <h2>
-              {this.state.topTracks.length}
-              &nbsp;top tracks
-            </h2>,
-            <h3>
-              For a total of&nbsp;
-              {this.getTotalTracks(this.state.currentUser) + this.state.topTracks.length}
-              &nbsp;tracks
-            </h3>];
-        }
-      } else if (this.props.useSavedTracks) {
-        extraInfo = [
-          <h2 key={1}>
-            {this.state.savedTracks.length}
-            &nbsp;saved tracks
-          </h2>,
-          <h3 key={2}>
-            For a total of&nbsp;
-            {this.getTotalTracks(this.state.currentUser) + this.state.savedTracks.length}
-            &nbsp;tracks
-          </h3>];
-      } else {
-        extraInfo = (
-          <h3>
-            For a total of&nbsp;
-            {this.getTotalTracks(this.state.currentUser)}
-            &nbsp;tracks
-          </h3>
-        );
-      }
-
       return (
         <div className="analysisScreenWrapper">
           <NavigationBar activeScreen="analysis" />
@@ -181,11 +132,7 @@ class AnalysisScreen extends Component<Props, State> {
           <div className="userComparisonWrapper">
             <div className="currentUserAnalysis">
               <h1>{this.state.currentUser}</h1>
-              <h2>
-                {this.state.currentUserPlaylistJSON.total}
-                &nbsp;playlists
-              </h2>
-              {extraInfo}
+              <AnalysisExtraInfo numPlaylists={this.state.currentUserPlaylistIDs.length} numPlaylistTracks={this.getTotalTracks(this.state.currentUser)} numSavedTracks={this.state.savedTracks.length} numTopTracks={this.state.topTracks.length} />
 
             </div>
             <div className="otherUserAnalysis">
@@ -197,7 +144,7 @@ class AnalysisScreen extends Component<Props, State> {
               <h3>
                 For a total of&nbsp;
                 {this.getTotalTracks(this.state.userSearchedFor)}
-                &nbsp;total tracks
+                &nbsp;tracks
               </h3>
             </div>
           </div>
@@ -208,49 +155,7 @@ class AnalysisScreen extends Component<Props, State> {
 
     if (this.state.currentUser && this.state.otherUserPlaylistJSON) {
       // Only use my top tracks and saved tracks, not my playlists
-      let extraInfo;
-      if (this.props.useTopTracks) {
-        if (this.props.useSavedTracks) {
-          extraInfo = [
-            <h2 key={0}>
-              {this.state.topTracks.length}
-              &nbsp;top tracks
-            </h2>,
-            <h2 key={1}>
-              {this.state.savedTracks.length}
-              &nbsp;saved tracks
-            </h2>,
-            <h3>
-              For a total of&nbsp;
-              {this.state.topTracks.length + this.state.savedTracks.length}
-              &nbsp;tracks
-            </h3>];
-        } else {
-          extraInfo = [
-            <h2>
-              {this.state.topTracks.length}
-              &nbsp;top tracks
-            </h2>,
-            <h3>
-              For a total of&nbsp;
-              {this.state.topTracks.length}
-              &nbsp;tracks
-            </h3>];
-        }
-      } else if (this.props.useSavedTracks) {
-        extraInfo = [
-          <h2 key={1}>
-            {this.state.savedTracks.length}
-            &nbsp;saved tracks
-          </h2>,
-          <h3 key={2}>
-            For a total of&nbsp;
-            {this.state.savedTracks.length}
-            &nbsp;tracks
-          </h3>];
-      } else {
-        extraInfo = <h3>For a total of 0 tracks</h3>;
-      }
+      // let extraInfo;
       return (
         <div className="analysisScreenWrapper">
           <NavigationBar activeScreen="analysis" />
@@ -273,7 +178,7 @@ class AnalysisScreen extends Component<Props, State> {
           <div className="userComparisonWrapper">
             <div className="currentUserAnalysis">
               <h1>{this.state.currentUser}</h1>
-              {extraInfo}
+              <AnalysisExtraInfo numPlaylists={this.state.currentUserPlaylistIDs.length} numPlaylistTracks={this.getTotalTracks(this.state.currentUser)} numSavedTracks={this.state.savedTracks.length} numTopTracks={this.state.topTracks.length} />
 
             </div>
             <div className="otherUserAnalysis">
