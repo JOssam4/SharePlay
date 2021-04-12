@@ -44,16 +44,42 @@ type imageType = {
 
 type ArtistType = {
     external_urls: externalUrl,
+    followers: {
+        href: string | null,
+        total: number,
+    },
+    genres: string[],
     href: string,
     id: string,
+    images: imageType[],
     name: string,
+    popularity: number,
+    type: string,
+    uri: string,
+}
+
+/**
+ * Like the ArtistType, but returned under artist field in track objects (Minimum Artist Type)
+ * */
+type MinArtistType = {
+    external_urls: externalUrl,
+    followers: {
+        href: string | null,
+        total: number,
+    },
+    genres: string[],
+    href: string,
+    id: string,
+    images: imageType[],
+    name: string,
+    popularity: number,
     type: string,
     uri: string,
 }
 
 type AlbumType = {
     album_type: string,
-    artists: ArtistType[],
+    artists: MinArtistType[],
     available_markets: string[],
     external_urls: externalUrl,
     href: string,
@@ -70,7 +96,7 @@ type AlbumType = {
 
 type TrackType = {
     album: AlbumType,
-    artists: ArtistType[],
+    artists: MinArtistType[],
     available_markets: string[],
     disc_number: number
     duration_ms: number
@@ -116,5 +142,5 @@ type TracksRespWithoutAddedTime = {
 }
 
 export type {
-  Person, Playlist, PlaylistJSON, TrackType, ArtistType, AlbumType, TrackItems, TracksRespWithAddedTime, TracksRespWithoutAddedTime,
+  Person, Playlist, PlaylistJSON, TrackType, ArtistType, MinArtistType, AlbumType, TrackItems, TracksRespWithAddedTime, TracksRespWithoutAddedTime,
 };
