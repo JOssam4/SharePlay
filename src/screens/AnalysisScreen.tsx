@@ -114,22 +114,35 @@ class AnalysisScreen extends Component<Props, State> {
     });
   }
 
-  getSavedTracks() {
-    fetch('https://api.spotify.com/v1/me/tracks?limit=50', {
+  async getSavedTracks() {
+    const trackIDs: {id: string, name: string}[] = [];
+    let resp = await fetch('https://api.spotify.com/v1/me/tracks?limit=50', {
       headers: {
         Authorization: `Bearer ${this.props.authToken}`,
       },
-    })
-      .then((resp) => resp.json())
-      .then((savedTracksObject: TracksRespWithAddedTime) => {
-        const savedTracks = savedTracksObject.items;
-        const trackIds: {id: string, name: string}[] = [];
-        savedTracks.forEach((trackItem: TrackItems) => {
-          const { track } = trackItem;
-          trackIds.push({ id: track.id, name: track.name });
-        });
-        this.setState({ savedTracks: trackIds });
+    });
+    let respjson: TracksRespWithAddedTime = await resp.json();
+    respjson.items.forEach((trackItem: TrackItems) => {
+      trackIDs.push({ id: trackItem.track.id, name: trackItem.track.name });
+    });
+    let tracksRemaining = respjson.total - 50; // since we can only get 50 at a time, use this to keep track of how many more we need to get
+    let offset = 0;
+    while (tracksRemaining > 0) {
+      offset += 50;
+      // eslint-disable-next-line no-await-in-loop
+      resp = await fetch(`https://api.spotify.com/v1/me/tracks?offset=${offset}&limit=50`, {
+        headers: {
+          Authorization: `Bearer ${this.props.authToken}`,
+        },
       });
+      // eslint-disable-next-line no-await-in-loop
+      respjson = await resp.json();
+      respjson.items.forEach((trackItem: TrackItems) => {
+        trackIDs.push({ id: trackItem.track.id, name: trackItem.track.name });
+      });
+      tracksRemaining -= 50;
+    }
+    this.setState({ savedTracks: trackIDs });
   }
 
   async getUserPlaylistData() {
@@ -169,63 +182,6 @@ class AnalysisScreen extends Component<Props, State> {
       });
     }
   }
-
-  /*
-  getUserPlaylistData() {
-    if (this.props.usePlaylists) {
-      fetch('https://api.spotify.com/v1/me/playlists?limit=50', {
-        headers: {
-          Authorization: `Bearer ${this.props.authToken}`,
-        },
-      }).then((currentUserResp) => {
-        currentUserResp.json().then((currentUserRespjson) => {
-          fetch(`https://api.spotify.com/v1/users/${this.state.userSearchedFor}/playlists`, {
-            headers: {
-              Authorization: `Bearer ${this.props.authToken}`,
-            },
-          }).then((otherUserResp) => {
-            otherUserResp.json().then((otherUserRespjson) => {
-              const currentUserIDs: string[] = [];
-              const otherUserIDs: string[] = [];
-              currentUserRespjson.items.forEach((playlist: Playlist) => {
-                if (playlist.owner.id === this.state.currentUser) {
-                  currentUserIDs.push(playlist.id);
-                }
-              });
-              otherUserRespjson.items.forEach((playlist: Playlist) => {
-                otherUserIDs.push(playlist.id);
-              });
-              this.setState({
-                currentUserPlaylistJSON: currentUserRespjson,
-                otherUserPlaylistJSON: otherUserRespjson,
-                currentUserPlaylistIDs: currentUserIDs,
-                otherUserPlaylistIDs: otherUserIDs,
-              });
-            });
-          });
-        });
-      });
-    } else {
-      // Don't get my playlist data
-      fetch(`https://api.spotify.com/v1/users/${this.state.userSearchedFor}/playlists`, {
-        headers: {
-          Authorization: `Bearer ${this.props.authToken}`,
-        },
-      }).then((otherUserResp) => {
-        otherUserResp.json().then((otherUserRespjson) => {
-          const otherUserIDs: string[] = [];
-          otherUserRespjson.items.forEach((playlist: Playlist) => {
-            otherUserIDs.push(playlist.id);
-          });
-          this.setState({
-            otherUserPlaylistJSON: otherUserRespjson,
-            otherUserPlaylistIDs: otherUserIDs,
-          });
-        });
-      });
-    }
-  }
-   */
 
   // Gonna go for a kind of split-screen look here. Current user on left, searched user on right.
   render() {
