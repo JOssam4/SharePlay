@@ -6,6 +6,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { TopTracksType } from '../Helpers/OtherTypes';
 import SharedDataView from './SharedDataView';
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
     currentUserPlaylistIDs: string[],
     otherUserPlaylistIDs: string[],
     topTracks: {id: string, name: string}[],
+    savedTracks: {id: string, name: string}[],
     userSearchedFor: string,
 }
 
@@ -42,6 +44,11 @@ class CommonTracksHandler extends Component<Props, State> {
 
   loadTrackData() {
     const currentUserTracks = new Map();
+    if (this.props.savedTracks) {
+      this.props.savedTracks.forEach((track: TopTracksType) => {
+        currentUserTracks.set(track.id, track.name);
+      });
+    }
     if (this.props.topTracks) {
       this.props.topTracks.forEach((track) => {
         currentUserTracks.set(track.id, track.name);
@@ -160,6 +167,7 @@ CommonTracksHandler.propTypes = {
   currentUser: PropTypes.string.isRequired,
   userSearchedFor: PropTypes.string.isRequired,
   topTracks: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string, name: PropTypes.string })).isRequired,
+  savedTracks: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string, name: PropTypes.string })).isRequired,
   currentUserPlaylistIDs: PropTypes.arrayOf(PropTypes.string).isRequired,
   otherUserPlaylistIDs: PropTypes.arrayOf(PropTypes.string).isRequired,
   authToken: PropTypes.string.isRequired,

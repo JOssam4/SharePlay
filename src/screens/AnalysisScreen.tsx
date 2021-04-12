@@ -12,7 +12,7 @@ import NavigationBar from '../components/NavigationBar';
 import type {
   // eslint-disable-next-line no-unused-vars
   Playlist, PlaylistJSON, TrackItems, TrackType, TracksRespWithAddedTime, TracksRespWithoutAddedTime,
-} from '../SpotifyAPITypes';
+} from '../Helpers/SpotifyAPITypes';
 
 // import SharedDataView from '../components/SharedDataView';
 import CommonTracksHandler from '../components/CommonTracksHandler';
@@ -98,46 +98,81 @@ class AnalysisScreen extends Component<Props, State> {
   }
 
   getTopTracks() {
-    if (this.props.useTopTracks) {
-      fetch(`https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=${this.props.topTracksTimeframe}`, {
+    fetch(`https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=${this.props.topTracksTimeframe}`, {
+      headers: {
+        Authorization: `Bearer ${this.props.authToken}`,
+      },
+    }).then((resp) => {
+      resp.json().then((topTracksObject: TracksRespWithoutAddedTime) => {
+        const trackIds: {id: string, name: string}[] = [];
+        const topTracks = topTracksObject.items;
+        topTracks.forEach((track: TrackType) => {
+          trackIds.push({ id: track.id, name: track.name });
+        });
+        this.setState({ topTracks: trackIds });
+      });
+    });
+  }
+
+  getSavedTracks() {
+    fetch('https://api.spotify.com/v1/me/tracks?limit=50', {
+      headers: {
+        Authorization: `Bearer ${this.props.authToken}`,
+      },
+    })
+      .then((resp) => resp.json())
+      .then((savedTracksObject: TracksRespWithAddedTime) => {
+        const savedTracks = savedTracksObject.items;
+        const trackIds: {id: string, name: string}[] = [];
+        savedTracks.forEach((trackItem: TrackItems) => {
+          const { track } = trackItem;
+          trackIds.push({ id: track.id, name: track.name });
+        });
+        this.setState({ savedTracks: trackIds });
+      });
+  }
+
+  async getUserPlaylistData() {
+    const otherUserResp = await fetch(`https://api.spotify.com/v1/users/${this.state.userSearchedFor}/playlists`, {
+      headers: {
+        Authorization: `Bearer ${this.props.authToken}`,
+      },
+    });
+    const otherUserRespjson: PlaylistJSON = await otherUserResp.json();
+    const otherUserIDs: string[] = [];
+    otherUserRespjson.items.forEach((playlist: Playlist) => {
+      otherUserIDs.push(playlist.id);
+    });
+    if (this.props.usePlaylists) {
+      const currentUserResp = await fetch('https://api.spotify.com/v1/me/playlists?limit=50', {
         headers: {
           Authorization: `Bearer ${this.props.authToken}`,
         },
-      }).then((resp) => {
-        resp.json().then((topTracksObject: TracksRespWithoutAddedTime) => {
-          const trackIds: {id: string, name: string}[] = [];
-          const topTracks = topTracksObject.items;
-          topTracks.forEach((track: TrackType) => {
-            trackIds.push({ id: track.id, name: track.name });
-          });
-          this.setState({ topTracks: trackIds });
-        });
+      });
+      const currentUserRespjson: PlaylistJSON = await currentUserResp.json();
+      const currentUserIDs: string[] = [];
+      currentUserRespjson.items.forEach((playlist: Playlist) => {
+        if (playlist.owner.id === this.state.currentUser) {
+          currentUserIDs.push(playlist.id);
+        }
+      });
+      this.setState({
+        currentUserPlaylistJSON: currentUserRespjson,
+        otherUserPlaylistJSON: otherUserRespjson,
+        currentUserPlaylistIDs: currentUserIDs,
+        otherUserPlaylistIDs: otherUserIDs,
+      });
+    } else {
+      this.setState({
+        otherUserPlaylistJSON: otherUserRespjson,
+        otherUserPlaylistIDs: otherUserIDs,
       });
     }
   }
 
-  getSavedTracks() {
-    if (this.props.useSavedTracks) {
-      fetch('https://api.spotify.com/v1/me/tracks', {
-        headers: {
-          Authorization: `Bearer ${this.props.authToken}`,
-        },
-      })
-        .then((resp) => resp.json())
-        .then((savedTracksObject: TracksRespWithAddedTime) => {
-          const savedTracks = savedTracksObject.items;
-          const trackIds: {id: string, name: string}[] = [];
-          savedTracks.forEach((trackItem: TrackItems) => {
-            const { track } = trackItem;
-            trackIds.push({ id: track.id, name: track.name });
-          });
-          this.setState({ savedTracks: trackIds });
-        });
-    }
-  }
-
+  /*
   getUserPlaylistData() {
-    if (this.state.currentUser && this.state.userSearchedFor && this.props.usePlaylists) {
+    if (this.props.usePlaylists) {
       fetch('https://api.spotify.com/v1/me/playlists?limit=50', {
         headers: {
           Authorization: `Bearer ${this.props.authToken}`,
@@ -190,6 +225,7 @@ class AnalysisScreen extends Component<Props, State> {
       });
     }
   }
+   */
 
   // Gonna go for a kind of split-screen look here. Current user on left, searched user on right.
   render() {
@@ -289,7 +325,7 @@ class AnalysisScreen extends Component<Props, State> {
               </h3>
             </div>
           </div>
-          <CommonTracksHandler currentUser={this.state.currentUser} userSearchedFor={this.state.userSearchedFor} topTracks={this.state.topTracks} currentUserPlaylistIDs={this.state.currentUserPlaylistIDs} otherUserPlaylistIDs={this.state.otherUserPlaylistIDs} authToken={this.props.authToken} />
+          <CommonTracksHandler currentUser={this.state.currentUser} userSearchedFor={this.state.userSearchedFor} topTracks={this.state.topTracks} currentUserPlaylistIDs={this.state.currentUserPlaylistIDs} otherUserPlaylistIDs={this.state.otherUserPlaylistIDs} savedTracks={this.state.savedTracks} authToken={this.props.authToken} />
         </div>
       );
     }
@@ -377,7 +413,7 @@ class AnalysisScreen extends Component<Props, State> {
               </h3>
             </div>
           </div>
-          <CommonTracksHandler currentUser={this.state.currentUser} userSearchedFor={this.state.userSearchedFor} topTracks={this.state.topTracks} currentUserPlaylistIDs={this.state.currentUserPlaylistIDs} otherUserPlaylistIDs={this.state.otherUserPlaylistIDs} authToken={this.props.authToken} />
+          <CommonTracksHandler currentUser={this.state.currentUser} userSearchedFor={this.state.userSearchedFor} topTracks={this.state.topTracks} currentUserPlaylistIDs={this.state.currentUserPlaylistIDs} otherUserPlaylistIDs={this.state.otherUserPlaylistIDs} savedTracks={this.state.savedTracks} authToken={this.props.authToken} />
         </div>
       );
     }
