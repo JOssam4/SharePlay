@@ -83,31 +83,9 @@ class CommonTracksHandler extends Component<Props, State> {
       });
     } else {
       // Current user playlist data not read.
-      // TODO: make it so that if I'm only using my top tracks data then the other user's playlist data is made into a map to increase efficiency.
       this.setState({ currentUserTrackMap: currentUserTracks });
     }
   }
-  /*
-  async compareTracks() {
-    const sharedTracks = new Map();
-    if (this.state.currentUserTrackMap) {
-      this.props.otherUserPlaylistIDs.forEach(async (playlistID: string) => {
-        const resp = await fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks?fields=items(track.id,track.name,track.artists)`, {
-          headers: {
-            Authorization: `Bearer ${this.props.authToken}`,
-          },
-        });
-        const respjson = await resp.json();
-        respjson.items.forEach((trackObj: trackObject) => {
-          if (this.state.currentUserTrackMap.has(trackObj.track.id)) {
-            sharedTracks.set(trackObj.track.id, { name: trackObj.track.name, artists: trackObj.track.artists });
-          }
-        });
-      });
-      this.setState({ sharedTracks, finishedComparing: true });
-    }
-  }
-  */
 
   compareTracks() {
     const sharedTracks = new Map();
