@@ -6,8 +6,9 @@ export const SET_USE_PLAYLISTS = 'SET_USE_PLAYLISTS';
 export const SET_USE_TOP_TRACKS = 'SET_USE_TOP_TRACKS';
 export const SET_USE_SAVED_TRACKS = 'SET_USE_SAVED_TRACKS';
 export const SET_TOP_TRACKS_TIMEFRAME = 'SET_TOP_TRACKS_TIMEFRAME';
+export const SET_TOP_TRACKS_AND_TIMEFRAME = 'SET_TOP_TRACKS_AND_TIMEFRAME';
 
-/**
+/*
  * @TODO: merge SET_USE_TOP_TRACKS and SET_TOP_TRACKS_TIMEFRAME so they're both set with one function call
  * */
 
@@ -56,6 +57,15 @@ export function setUseTopTracks(useTopTracks: boolean) {
 export function setTopTracksTimeframe(topTracksTimeframe: string | null) {
   return {
     type: SET_TOP_TRACKS_TIMEFRAME,
+    topTracksTimeframe,
+  };
+}
+
+export function setTopTracksAndTimeframe(useTopTracks: boolean, topTracksTimeframe: string | null = null) {
+  // 2 possible cases: 1.) useTopTracks = false, topTracksTimeframe = null; 2.) useTopTracks = true, topTracksTimeframe is one of 'short_term', 'medium_term', 'long_term'
+  return {
+    type: SET_TOP_TRACKS_AND_TIMEFRAME,
+    useTopTracks,
     topTracksTimeframe,
   };
 }

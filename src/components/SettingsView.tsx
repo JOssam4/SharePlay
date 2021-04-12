@@ -7,7 +7,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 
 import { connect } from 'react-redux';
 import {
-  setUsePlaylists, setUseTopTracks, setTopTracksTimeframe, setUseSavedTracks,
+  setUsePlaylists, setUseTopTracks, setTopTracksTimeframe, setUseSavedTracks, setTopTracksAndTimeframe,
 } from '../actions';
 import { DispatchType, StoreType } from '../store';
 
@@ -24,6 +24,8 @@ interface Props {
   setTopTracksTimeframe: (use: string | null) => void,
   // eslint-disable-next-line no-unused-vars
   setUseSavedTracks: (use: boolean) => void,
+  // eslint-disable-next-line no-unused-vars
+  setTopTracksAndTimeframe: (use: boolean, frame: string | null) => void,
 }
 
 interface State {
@@ -46,30 +48,13 @@ class SettingsView extends Component<Props, State> {
     // let usePlaylists = this.props.usePlaylists;
 
     this.state = {
-      // usePlaylists: usePlaylistsBool,
       usePlaylists: props.usePlaylists,
-      // recentlyListenedTo: Boolean(useTopTracks),
       useTopTracks: props.useTopTracks,
-      // short_term: shortTerm,
-      // medium_term: mediumTerm,
-      // long_term: longTerm,
       topTracksTimeframe: props.topTracksTimeframe,
       useSavedTracks: props.useSavedTracks,
-
-      // useSavedTracks: useSavedTracksBool,
     };
     this.handleSwitchChange = this.handleSwitchChange.bind(this);
     this.handleRadioChange = this.handleRadioChange.bind(this);
-  }
-
-  componentDidMount() {
-    // Since we did some figuring in the constructor to set default state of usePlaylists and recentlyListenedTo, make sure they get pushed into the redux store.
-    // this.setUseTopTracks(this.state.recentlyListenedTo)
-    // this.setUseTopTracks(String(false));
-    this.props.setUseTopTracks(false);
-    this.props.setTopTracksTimeframe(null);
-    // this.setUsePlaylists(this.state.usePlaylists);
-    this.props.setUsePlaylists(this.state.usePlaylists);
   }
 
   handleSwitchChange(event: any) {
@@ -78,30 +63,19 @@ class SettingsView extends Component<Props, State> {
     // @ts-ignore
     if (targetName === 'useTopTracks' && this.state[event.target.name] === true) {
       // Have to disable short_term, medium_term, and long_term if parent switch turned off.
-      // this.setUseTopTracks(String(false));
-      this.props.setUseTopTracks(false);
-      this.props.setTopTracksTimeframe(null);
-      /*
-      this.setState({
-        short_term: false, medium_term: false, long_term: false, recentlyListenedTo: false,
-      });
-       */
+      this.props.setTopTracksAndTimeframe(false, null);
       this.setState({ useTopTracks: false, topTracksTimeframe: null });
     } else { // @ts-ignore
       // eslint-disable-next-line no-lonely-if
       if (targetName === 'useTopTracks' && this.state[event.target.name] === false) {
         // User clicked on switch to turn on recently listened to tracks. So, use the short_term radio box as a default.
-        // this.setUseTopTracks('short_term');
-        this.props.setUseTopTracks(true);
-        this.props.setTopTracksTimeframe('short_term');
+        this.props.setTopTracksAndTimeframe(true, 'short_term');
         this.setState({ topTracksTimeframe: 'short_term', useTopTracks: true });
       } else if (targetName === 'useSavedTracks') {
-        // this.setUseSavedTracks(!this.state.useSavedTracks);
         this.props.setUseSavedTracks(!this.state.useSavedTracks);
         // eslint-disable-next-line react/no-access-state-in-setstate
         this.setState({ useSavedTracks: !this.state.useSavedTracks });
       } else {
-        // this.setUsePlaylists(event.target.checked);
         this.props.setUsePlaylists(event.target.checked);
         this.setState({ ...this.state, [event.target.name]: event.target.checked });
       }
@@ -111,19 +85,13 @@ class SettingsView extends Component<Props, State> {
   handleRadioChange(event: any) {
     // event.persist(); // Makes it so I can go into the console and debug the event.
     if (event.target.name === 'short_term') {
-      // this.setUseTopTracks('short_term');
-      this.props.setUseTopTracks(true);
-      this.props.setTopTracksTimeframe('short_term');
+      this.props.setTopTracksAndTimeframe(true, 'short_term');
       this.setState({ topTracksTimeframe: 'short_term' });
     } else if (event.target.name === 'medium_term') {
-      // this.setUseTopTracks('medium_term');
-      this.props.setUseTopTracks(true);
-      this.props.setTopTracksTimeframe('medium_term');
+      this.props.setTopTracksAndTimeframe(true, 'medium_term');
       this.setState({ topTracksTimeframe: 'medium_term' });
     } else if (event.target.name === 'long_term') {
-      // this.setUseTopTracks('long_term');
-      this.props.setUseTopTracks(true);
-      this.props.setTopTracksTimeframe('long_term');
+      this.props.setTopTracksAndTimeframe(true, 'long_term');
       this.setState({ topTracksTimeframe: 'long_term' });
     } else {
       throw new Error(`event target name not recognized: ${event.target.name}`);
@@ -189,8 +157,8 @@ const mapDispatchToProps = (dispatch: DispatchType) => ({
   setUseTopTracks: (useTopTracks: boolean) => dispatch(setUseTopTracks(useTopTracks)),
   setTopTracksTimeframe: (topTracksTimeframe: string | null) => dispatch(setTopTracksTimeframe(topTracksTimeframe)),
   setUseSavedTracks: (useSavedTracks: boolean) => dispatch(setUseSavedTracks(useSavedTracks)),
+  setTopTracksAndTimeframe: (useTopTracks: boolean, topTracksTimeframe: string | null) => dispatch(setTopTracksAndTimeframe(useTopTracks, topTracksTimeframe)),
 });
 
-// export default SettingsView;
 // @ts-ignore
 export default connect<stateProps, dispatchProps, any>(mapStateToProps, mapDispatchToProps)(SettingsView);
