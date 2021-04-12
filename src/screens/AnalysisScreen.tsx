@@ -17,6 +17,8 @@ import type {
 // import SharedDataView from '../components/SharedDataView';
 import CommonTracksHandler from '../components/CommonTracksHandler';
 
+import { getUserPlaylistData, getTopTracks, getSavedTracks } from '../Helpers/AnalysisHelperFuncs';
+
 interface Props {
   authToken: string,
   currentUser: string,
@@ -71,14 +73,17 @@ class AnalysisScreen extends Component<Props, State> {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.state.currentUser && this.state.userSearchedFor) {
-      this.getUserPlaylistData();
-      if (this.props.useTopTracks) {
-        this.getTopTracks();
+      const playlistData = await getUserPlaylistData(this.props.authToken, this.props.currentUser, this.props.userSearchedFor, this.props.usePlaylists);
+      this.setState(playlistData);
+      if (this.props.useTopTracks && this.props.topTracksTimeframe) {
+        const topTracks = await getTopTracks(this.props.authToken, this.props.topTracksTimeframe);
+        this.setState({ topTracks });
       }
       if (this.props.useSavedTracks) {
-        this.getSavedTracks();
+        const savedTracks = await getSavedTracks(this.props.authToken);
+        this.setState({ savedTracks });
       }
     }
   }
@@ -95,92 +100,6 @@ class AnalysisScreen extends Component<Props, State> {
       });
     }
     return totalTracks;
-  }
-
-  getTopTracks() {
-    fetch(`https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=${this.props.topTracksTimeframe}`, {
-      headers: {
-        Authorization: `Bearer ${this.props.authToken}`,
-      },
-    }).then((resp) => {
-      resp.json().then((topTracksObject: TracksRespWithoutAddedTime) => {
-        const trackIds: {id: string, name: string}[] = [];
-        const topTracks = topTracksObject.items;
-        topTracks.forEach((track: TrackType) => {
-          trackIds.push({ id: track.id, name: track.name });
-        });
-        this.setState({ topTracks: trackIds });
-      });
-    });
-  }
-
-  async getSavedTracks() {
-    const trackIDs: {id: string, name: string}[] = [];
-    let resp = await fetch('https://api.spotify.com/v1/me/tracks?limit=50', {
-      headers: {
-        Authorization: `Bearer ${this.props.authToken}`,
-      },
-    });
-    let respjson: TracksRespWithAddedTime = await resp.json();
-    respjson.items.forEach((trackItem: TrackItems) => {
-      trackIDs.push({ id: trackItem.track.id, name: trackItem.track.name });
-    });
-    let tracksRemaining = respjson.total - 50; // since we can only get 50 at a time, use this to keep track of how many more we need to get
-    let offset = 0;
-    while (tracksRemaining > 0) {
-      offset += 50;
-      // eslint-disable-next-line no-await-in-loop
-      resp = await fetch(`https://api.spotify.com/v1/me/tracks?offset=${offset}&limit=50`, {
-        headers: {
-          Authorization: `Bearer ${this.props.authToken}`,
-        },
-      });
-      // eslint-disable-next-line no-await-in-loop
-      respjson = await resp.json();
-      respjson.items.forEach((trackItem: TrackItems) => {
-        trackIDs.push({ id: trackItem.track.id, name: trackItem.track.name });
-      });
-      tracksRemaining -= 50;
-    }
-    this.setState({ savedTracks: trackIDs });
-  }
-
-  async getUserPlaylistData() {
-    const otherUserResp = await fetch(`https://api.spotify.com/v1/users/${this.state.userSearchedFor}/playlists`, {
-      headers: {
-        Authorization: `Bearer ${this.props.authToken}`,
-      },
-    });
-    const otherUserRespjson: PlaylistJSON = await otherUserResp.json();
-    const otherUserIDs: string[] = [];
-    otherUserRespjson.items.forEach((playlist: Playlist) => {
-      otherUserIDs.push(playlist.id);
-    });
-    if (this.props.usePlaylists) {
-      const currentUserResp = await fetch('https://api.spotify.com/v1/me/playlists?limit=50', {
-        headers: {
-          Authorization: `Bearer ${this.props.authToken}`,
-        },
-      });
-      const currentUserRespjson: PlaylistJSON = await currentUserResp.json();
-      const currentUserIDs: string[] = [];
-      currentUserRespjson.items.forEach((playlist: Playlist) => {
-        if (playlist.owner.id === this.state.currentUser) {
-          currentUserIDs.push(playlist.id);
-        }
-      });
-      this.setState({
-        currentUserPlaylistJSON: currentUserRespjson,
-        otherUserPlaylistJSON: otherUserRespjson,
-        currentUserPlaylistIDs: currentUserIDs,
-        otherUserPlaylistIDs: otherUserIDs,
-      });
-    } else {
-      this.setState({
-        otherUserPlaylistJSON: otherUserRespjson,
-        otherUserPlaylistIDs: otherUserIDs,
-      });
-    }
   }
 
   // Gonna go for a kind of split-screen look here. Current user on left, searched user on right.
