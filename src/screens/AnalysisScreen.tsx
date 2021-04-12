@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Jumbotron } from 'react-bootstrap';
 import { RouteComponentProps, Link, Redirect } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
 import type {
@@ -15,11 +14,12 @@ import type {
 } from '../Helpers/SpotifyAPITypes';
 import { MinifiedTrackType, MapTrackValue } from '../Helpers/OtherTypes';
 
-// import SharedDataView from '../components/SharedDataView';
 import CommonTracksHandler from '../components/CommonTracksHandler';
 import AnalysisExtraInfo from '../components/AnalysisExtraInfo';
 
 import { getUserPlaylistData, getTopTracks, getSavedTracks } from '../Helpers/AnalysisHelperFuncs';
+
+import '../styles/AnalysisScreen.css';
 
 interface Props {
   authToken: string,
@@ -113,11 +113,10 @@ class AnalysisScreen extends Component<Props, State> {
       return (
         <div className="analysisScreenWrapper">
           <NavigationBar activeScreen="analysis" />
-          <Jumbotron>
+          <div className="info">
             <h1>
               Welcome to the Analysis Screen&nbsp;
               {this.state.currentUser}
-              !
             </h1>
             <h2>
               You have searched for&nbsp;
@@ -128,7 +127,7 @@ class AnalysisScreen extends Component<Props, State> {
               <Link to="/me">homepage</Link>
               &nbsp;to narrow/broaden your results
             </h4>
-          </Jumbotron>
+          </div>
           <div className="userComparisonWrapper">
             <div className="currentUserAnalysis">
               <h1>{this.state.currentUser}</h1>
@@ -158,7 +157,7 @@ class AnalysisScreen extends Component<Props, State> {
       return (
         <div className="analysisScreenWrapper">
           <NavigationBar activeScreen="analysis" />
-          <Jumbotron>
+          <div className="info">
             <h1>
               Welcome to the Analysis Screen&nbsp;
               {this.state.currentUser}
@@ -173,7 +172,7 @@ class AnalysisScreen extends Component<Props, State> {
               <Link to="/me">homepage</Link>
               &nbsp;to narrow/broaden your results
             </h4>
-          </Jumbotron>
+          </div>
           <div className="userComparisonWrapper">
             <div className="currentUserAnalysis">
               <h1>{this.state.currentUser}</h1>
