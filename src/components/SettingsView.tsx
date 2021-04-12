@@ -7,7 +7,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 
 import { connect } from 'react-redux';
 import {
-  setUsePlaylists, setUseTopTracks, setTopTracksTimeframe, setUseSavedTracks, setTopTracksAndTimeframe,
+  setUsePlaylists, setUseSavedTracks, setTopTracksAndTimeframe,
 } from '../actions';
 import { DispatchType, StoreType } from '../store';
 
@@ -18,10 +18,6 @@ interface Props {
   useSavedTracks: boolean,
   // eslint-disable-next-line no-unused-vars
   setUsePlaylists: (use: boolean) => void,
-  // eslint-disable-next-line no-unused-vars
-  setUseTopTracks: (use: boolean) => void,
-  // eslint-disable-next-line no-unused-vars
-  setTopTracksTimeframe: (use: string | null) => void,
   // eslint-disable-next-line no-unused-vars
   setUseSavedTracks: (use: boolean) => void,
   // eslint-disable-next-line no-unused-vars
@@ -154,8 +150,6 @@ const mapStateToProps = (state: StoreType) => ({
 
 const mapDispatchToProps = (dispatch: DispatchType) => ({
   setUsePlaylists: (usePlaylists: boolean) => dispatch(setUsePlaylists(usePlaylists)),
-  setUseTopTracks: (useTopTracks: boolean) => dispatch(setUseTopTracks(useTopTracks)),
-  setTopTracksTimeframe: (topTracksTimeframe: string | null) => dispatch(setTopTracksTimeframe(topTracksTimeframe)),
   setUseSavedTracks: (useSavedTracks: boolean) => dispatch(setUseSavedTracks(useSavedTracks)),
   setTopTracksAndTimeframe: (useTopTracks: boolean, topTracksTimeframe: string | null) => dispatch(setTopTracksAndTimeframe(useTopTracks, topTracksTimeframe)),
 });
