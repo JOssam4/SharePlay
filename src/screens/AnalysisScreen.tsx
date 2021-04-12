@@ -155,7 +155,6 @@ class AnalysisScreen extends Component<Props, State> {
 
     if (this.state.currentUser && this.state.otherUserPlaylistJSON) {
       // Only use my top tracks and saved tracks, not my playlists
-      // let extraInfo;
       return (
         <div className="analysisScreenWrapper">
           <NavigationBar activeScreen="analysis" />
