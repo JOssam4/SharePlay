@@ -4,6 +4,10 @@
     align-items: center;
 }
 
+.analysisScreenWrapper {
+    background-color: #1DB954;
+}
+
 .AnalysisExtraInfo {
     display: flex;
     flex-direction: column;
