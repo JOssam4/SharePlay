@@ -5,12 +5,33 @@ interface Props {
     numPlaylistTracks: number,
     numSavedTracks: number,
     numTopTracks: number,
+    isCurrentUser: boolean,
 }
 
 export default function AnalysisExtraInfo(props: Props) {
   let playlistInfo = null;
   let topTracksInfo = null;
   let savedTracksInfo = null;
+
+  if (!props.isCurrentUser) {
+    playlistInfo = (
+      <h2>
+        {props.numPlaylists}
+              &nbsp;playlists
+      </h2>
+    );
+    const total = props.numPlaylistTracks;
+    return (
+      <div className="AnalysisExtraInfo">
+        {playlistInfo}
+        <h3>
+          For a total of&nbsp;
+          {total}
+          &nbsp;tracks
+        </h3>
+      </div>
+    );
+  }
 
   if (props.numTopTracks > 0) {
     topTracksInfo = (
@@ -45,7 +66,7 @@ export default function AnalysisExtraInfo(props: Props) {
   );
 
   return (
-    <div>
+    <div className="AnalysisExtraInfo">
       {playlistInfo}
       {savedTracksInfo}
       {topTracksInfo}
