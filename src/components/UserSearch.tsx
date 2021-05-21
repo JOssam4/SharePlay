@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { Form, Button } from 'react-bootstrap';
 import '../styles/Search.css';
@@ -12,7 +13,7 @@ interface State {
     text: string,
 }
 
-export default class UserSearch extends Component<Props, State> {
+class UserSearch extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -47,3 +48,10 @@ export default class UserSearch extends Component<Props, State> {
     );
   }
 }
+
+// @ts-ignore
+UserSearch.propTypes = {
+  submitHandler: PropTypes.func.isRequired,
+};
+
+export default UserSearch;

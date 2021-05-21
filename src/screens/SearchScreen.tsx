@@ -120,16 +120,35 @@ class SearchScreen extends Component<Props, State> {
       return null;
     }
 
+    static getUsernameFromShareURL(shareURL: string): string {
+      const userNameAndParams = shareURL.substring(shareURL.indexOf('/user/') + 6);
+      if (userNameAndParams.includes('?')) {
+        return userNameAndParams.substring(0, userNameAndParams.indexOf('?'));
+      }
+      return userNameAndParams;
+    }
+
+    /**
+     * should accept either a direct username or a spotify share URL.
+     * spotify share URL format: https://open.spotify.com/user/<USERNAME>?si=<DATA>.
+     * This function should be able to parse out the <USERNAME> data in the latter case.
+     * */
     submitHandler(otherUser: string) {
-      fetch(`https://api.spotify.com/v1/users/${otherUser}`, {
+      let userID: string;
+      if (otherUser.includes('spotify.com')) {
+        userID = SearchScreen.getUsernameFromShareURL(otherUser);
+      } else {
+        userID = otherUser;
+      }
+      fetch(`https://api.spotify.com/v1/users/${userID}`, {
         headers: {
           Authorization: `Bearer ${this.props.authToken}`,
         },
       }).then((resp) => {
         if (resp.ok) {
           resp.json().then((respjson) => {
-            this.setState({ userSearchedFor: otherUser, userNotFound: false, userSearchedForJSONData: respjson });
-            this.props.dispatch(setUserSearchedFor(otherUser));
+            this.setState({ userSearchedFor: userID, userNotFound: false, userSearchedForJSONData: respjson });
+            this.props.dispatch(setUserSearchedFor(userID));
           });
         } else {
           this.setState({ userNotFound: true, userSearchedFor: null, userSearchedForJSONData: null });
