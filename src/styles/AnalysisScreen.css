@@ -33,3 +33,26 @@ div.userAnalysis {
 #other {
     background-color: salmon;
 }
+
+div.comparisonView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#compare-button {
+    margin-top: 2em;
+    background-color: black;
+    border-color: black;
+}
+
+#generate-button {
+    background-color: black;
+    border-color: black;
+}
+
+div.sharedDataWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

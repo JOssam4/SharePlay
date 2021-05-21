@@ -10,6 +10,8 @@ import { MinifiedTrackType, MapTrackValue } from '../Helpers/OtherTypes';
 import SharedDataView from './SharedDataView';
 import { MinArtistType } from '../Helpers/SpotifyAPITypes';
 
+import '../styles/AnalysisScreen.css';
+
 interface Props {
     authToken: string,
     currentUser: string,
@@ -155,14 +157,14 @@ class CommonTracksHandler extends Component<Props, State> {
     if (this.state.finishedComparing && this.state.sharedTracks.size === 0) {
       return (
         <div>
-          <Button disabled>Compare Tracks</Button>
+          <Button variant="primary" id="compare-button" disabled>Compare Tracks</Button>
           <h3>Sorry, no shared tracks found.</h3>
         </div>
       );
     }
     return (
-      <div>
-        <Button onClick={this.loadAndCompare}>Compare Tracks</Button>
+      <div className="comparisonView">
+        <Button onClick={this.loadAndCompare} variant="primary" id="compare-button">Compare Tracks</Button>
         {this.state.sharedTracks.size > 0
         && <SharedDataView sharedTracks={this.state.sharedTracks} playlistGenerator={this.createPlaylist} />}
       </div>

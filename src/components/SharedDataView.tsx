@@ -7,6 +7,8 @@ import { Card, Button } from 'react-bootstrap';
 import { MapTrackValue } from '../Helpers/OtherTypes';
 import { MinArtistType } from '../Helpers/SpotifyAPITypes';
 
+import '../styles/AnalysisScreen.css';
+
 interface Props {
     playlistGenerator: Function,
     sharedTracks: Map<string, MapTrackValue>,
@@ -51,14 +53,14 @@ export default class SharedDataView extends Component<Props, State> {
       return (
         <div className="sharedDataWrapper">
           {this.showSharedTracks()}
-          <Button variant="primary" size="lg" type="button" disabled>Playlist generated!</Button>
+          <Button variant="primary" size="lg" type="button" id="generate-button" disabled>Playlist generated!</Button>
         </div>
       );
     }
     return (
       <div className="sharedDataWrapper">
         {this.showSharedTracks()}
-        <Button variant="primary" size="lg" type="button" onClick={() => { this.setState({ playlistGenerated: true }); this.props.playlistGenerator(); }} disabled={this.state.playlistGenerated}>Generate Playlist and add it to my account</Button>
+        <Button variant="primary" size="lg" type="button" id="generate-button" onClick={() => { this.setState({ playlistGenerated: true }); this.props.playlistGenerator(); }} disabled={this.state.playlistGenerated}>Generate Playlist and add it to my account</Button>
       </div>
     );
   }

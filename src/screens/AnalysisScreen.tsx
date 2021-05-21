@@ -160,19 +160,8 @@ class AnalysisScreen extends Component<Props, State> {
             </h4>
           </div>
           <div className="userComparisonWrapper">
-            {/*
-              <div className="currentUserAnalysis">
-                <h1>{this.state.currentUser}</h1>
-                <AnalysisExtraInfo numPlaylists={this.state.currentUserPlaylistIDs.length}
-                                   numPlaylistTracks={this.getTotalTracks(this.state.currentUser)}
-                                   numSavedTracks={this.state.savedTracks.length}
-                                   numTopTracks={this.state.topTracks.length} isCurrentUser/>
-
-              </div>
-              */}
             <UserAnalysis user={this.state.currentUser} numPlaylists={this.state.currentUserPlaylistIDs.length} numPlaylistTracks={this.getTotalTracks(this.state.currentUser)} numSavedTracks={this.state.savedTracks.length} numTopTracks={this.state.topTracks.length} showsCurrentUser />
             <UserAnalysis user={this.state.userSearchedFor} numPlaylists={this.state.otherUserPlaylistJSON.total} numPlaylistTracks={this.getTotalTracks(this.state.userSearchedFor)} numSavedTracks={0} numTopTracks={0} showsCurrentUser={false} />
-            {/* <AnalysisExtraInfo numPlaylists={this.state.otherUserPlaylistJSON.total} numPlaylistTracks={this.getTotalTracks(this.state.userSearchedFor)} numSavedTracks={0} numTopTracks={0} isCurrentUser={false} /> */}
           </div>
           <CommonTracksHandler currentUser={this.state.currentUser} userSearchedFor={this.state.userSearchedFor} topTracks={this.state.topTracks} currentUserPlaylistIDs={this.state.currentUserPlaylistIDs} otherUserPlaylistIDs={this.state.otherUserPlaylistIDs} savedTracks={this.state.savedTracks} authToken={this.props.authToken} />
         </div>
