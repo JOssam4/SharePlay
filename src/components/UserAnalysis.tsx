@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import AnalysisExtraInfo from './AnalysisExtraInfo';
+import '../styles/AnalysisScreen.css';
 
 interface Props {
     user: string
@@ -13,9 +14,8 @@ interface Props {
 
 const UserAnalysis: FC<Props> = (props) => {
   if (props.showsCurrentUser) {
-    console.log('showing current user');
     return (
-      <div className="currentUserAnalysis">
+      <div className="userAnalysis" id="current">
         <h1>{props.user}</h1>
         <AnalysisExtraInfo
           numPlaylists={props.numPlaylists}
@@ -27,9 +27,8 @@ const UserAnalysis: FC<Props> = (props) => {
       </div>
     );
   }
-  console.log('showing other user');
   return (
-    <div className="otherUserAnalysis">
+    <div className="userAnalysis" id="other">
       <h1>{props.user}</h1>
       <AnalysisExtraInfo
         numPlaylists={props.numPlaylists}
