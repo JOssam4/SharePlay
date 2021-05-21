@@ -72,27 +72,3 @@ div.searchForm {
   width: 25%;
   margin: auto;
 }
-
-div.userComparisonWrapper {
-  display: flex;
-  flex-direction: row;
-
-}
-
-div.currentUserAnalysis {
-  /*align-content: center;*/
-  width: 50%;
-  background-color: aqua;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-}
-
-div.otherUserAnalysis {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50%;
-  background-color: salmon;
-}
