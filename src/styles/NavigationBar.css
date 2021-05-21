@@ -3,3 +3,13 @@
     pointer-events: none;
     color: white;
 }
+
+#navContainer {
+    margin-left: 0;
+}
+
+#navWrapper {
+    width: 100%;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
