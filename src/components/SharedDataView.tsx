@@ -35,7 +35,7 @@ export default class SharedDataView extends Component<Props, State> {
     this.state.sharedTracks.forEach((mapTrack) => {
       const artists = mapTrack.artists.map((artist: MinArtistType) => artist.name).join(', ');
       cards.push(
-        <Card key={counter}>
+        <Card key={counter} className="trackCard">
           <Card.Body>
             {mapTrack.name}
             &thinsp;-&thinsp;
