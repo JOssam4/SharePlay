@@ -13,20 +13,21 @@ import { MinArtistType } from '../Helpers/SpotifyAPITypes';
 import '../styles/AnalysisScreen.css';
 
 interface Props {
-    authToken: string,
-    currentUser: string,
-    currentUserPlaylistIDs: string[],
-    otherUserPlaylistIDs: string[],
-    topTracks: MinifiedTrackType[],
-    savedTracks: MinifiedTrackType[],
-    userSearchedFor: string,
+  authToken: string,
+  currentUser: string,
+  currentUserPlaylistIDs: string[],
+  otherUserPlaylistIDs: string[],
+  topTracks: MinifiedTrackType[],
+  savedTracks: MinifiedTrackType[],
+  userSearchedFor: string,
 }
 
 interface State {
-    currentUserTrackMap: Map<string, MapTrackValue>
-    finishedComparing: boolean,
-    sharedPlaylist: any,
-    sharedTracks: Map<string, MapTrackValue>
+  currentUserTrackMap: Map<string, MapTrackValue>
+  finishedComparing: boolean,
+  sharedPlaylist: any,
+  sharedTracks: Map<string, MapTrackValue>,
+  compareButtonDisabled: boolean,
 }
 
 type trackObject = {
@@ -46,6 +47,7 @@ class CommonTracksHandler extends Component<Props, State> {
       // eslint-disable-next-line react/no-unused-state
       sharedPlaylist: null,
       finishedComparing: false,
+      compareButtonDisabled: false,
     };
     this.loadTrackData = this.loadTrackData.bind(this);
     this.compareTracks = this.compareTracks.bind(this);
@@ -149,6 +151,7 @@ class CommonTracksHandler extends Component<Props, State> {
   }
 
   loadAndCompare() {
+    this.setState({ compareButtonDisabled: true });
     this.loadTrackData();
     this.compareTracks();
   }
@@ -157,14 +160,13 @@ class CommonTracksHandler extends Component<Props, State> {
     if (this.state.finishedComparing && this.state.sharedTracks.size === 0) {
       return (
         <div>
-          <Button variant="primary" id="compare-button" disabled>Compare Tracks</Button>
           <h3>Sorry, no shared tracks found.</h3>
         </div>
       );
     }
     return (
       <div className="comparisonView">
-        <Button onClick={this.loadAndCompare} variant="primary" id="compare-button">Compare Tracks</Button>
+        <Button onClick={this.loadAndCompare} variant="primary" id="compare-button" disabled={this.state.compareButtonDisabled}>Compare Tracks</Button>
         {this.state.sharedTracks.size > 0
         && <SharedDataView sharedTracks={this.state.sharedTracks} playlistGenerator={this.createPlaylist} />}
       </div>
