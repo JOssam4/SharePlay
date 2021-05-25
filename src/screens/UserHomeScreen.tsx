@@ -83,8 +83,8 @@ class UserHomeScreen extends Component<Props, State> {
         <NavigationBar activeScreen="me" />
         <div className="homescreen-welcome">
           <h1>
-            Welcome to SharePlay&thinsp;
-            {this.state.currentUser}
+            {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+            Welcome to SharePlay {this.state.currentUser}
           </h1>
           <h3>With SharePlay, you can find tracks/artists that both you and a friend enjoy</h3>
           <h5>This is your home screen. You can return here whenever you want</h5>
