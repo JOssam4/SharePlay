@@ -116,8 +116,7 @@ class AnalysisScreen extends Component<Props, State> {
           <NavigationBar activeScreen="analysis" />
           <div className="info">
             <h1>
-              Welcome to the Analysis Screen&thinsp;
-              {this.state.currentUser}
+              Analysis
             </h1>
             <h2>
               You have searched for&thinsp;
@@ -145,9 +144,7 @@ class AnalysisScreen extends Component<Props, State> {
           <NavigationBar activeScreen="analysis" />
           <div className="info">
             <h1>
-              Welcome to the Analysis Screen&thinsp;
-              {this.state.currentUser}
-              !
+              Analysis
             </h1>
             <h2>
               You have searched for&thinsp;
