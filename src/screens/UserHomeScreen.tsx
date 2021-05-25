@@ -83,15 +83,15 @@ class UserHomeScreen extends Component<Props, State> {
         <NavigationBar activeScreen="me" />
         <div className="homescreen-welcome">
           <h1>
-            Welcome to SharePlay&nbsp;
+            Welcome to SharePlay&thinsp;
             {this.state.currentUser}
           </h1>
           <h3>With SharePlay, you can find tracks/artists that both you and a friend enjoy</h3>
           <h5>This is your home screen. You can return here whenever you want</h5>
           <h5>
-            Whenever you&apos;re ready, head over to the&nbsp;
+            Whenever you&apos;re ready, head over to the&thinsp;
             <Link to="/search">Search</Link>
-            &nbsp;tab.
+            &thinsp;tab.
           </h5>
         </div>
         <div className="optionsWrapper">

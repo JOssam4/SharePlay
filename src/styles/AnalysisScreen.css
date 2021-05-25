@@ -4,8 +4,10 @@
     align-items: center;
 }
 
+/*https://stackoverflow.com/questions/19741145/bootstrap-navbar-fixed-top-covers-content*/
 .analysisScreenWrapper {
     background-color: #1DB954;
+    padding-top: 65px;
 }
 
 .AnalysisExtraInfo {

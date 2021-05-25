@@ -55,7 +55,7 @@ function NavigationBar({ activeScreen, userSearchedFor }: Props) {
   );
    */
   return (
-    <Navbar collapseOnSelect expand="sm" bg="light" variant="light">
+    <Navbar collapseOnSelect fixed="top" expand="sm" bg="light" variant="light">
       <Container id="navContainer">
         {/*
           <Navbar.Collapse id="responsive-navbar-nav">
