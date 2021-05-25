@@ -38,7 +38,7 @@ export default class SharedDataView extends Component<Props, State> {
         <Card key={counter}>
           <Card.Body>
             {mapTrack.name}
-            &nbsp;-&nbsp;
+            &thinsp;-&thinsp;
             {artists}
           </Card.Body>
         </Card>,

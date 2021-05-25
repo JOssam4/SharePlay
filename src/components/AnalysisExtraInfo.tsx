@@ -17,7 +17,7 @@ export default function AnalysisExtraInfo(props: Props) {
     playlistInfo = (
       <h2>
         {props.numPlaylists}
-              &nbsp;playlists
+              &thinsp;playlists
       </h2>
     );
     const total = props.numPlaylistTracks;
@@ -25,9 +25,9 @@ export default function AnalysisExtraInfo(props: Props) {
       <div className="AnalysisExtraInfo">
         {playlistInfo}
         <h3>
-          For a total of&nbsp;
+          For a total of&thinsp;
           {total}
-          &nbsp;tracks
+          &thinsp;tracks
         </h3>
       </div>
     );
@@ -37,7 +37,7 @@ export default function AnalysisExtraInfo(props: Props) {
     topTracksInfo = (
       <h2 key={0}>
         {props.numTopTracks}
-        &nbsp;top tracks
+        &thinsp;top tracks
       </h2>
     );
   }
@@ -45,7 +45,7 @@ export default function AnalysisExtraInfo(props: Props) {
     savedTracksInfo = (
       <h2 key={1}>
         {props.numSavedTracks}
-        &nbsp;saved tracks
+        &thinsp;saved tracks
       </h2>
     );
   }
@@ -53,15 +53,15 @@ export default function AnalysisExtraInfo(props: Props) {
     playlistInfo = (
       <h2>
         {props.numPlaylists}
-        &nbsp;playlists
+        &thinsp;playlists
       </h2>
     );
   }
   const total = (
     <h3 key={2}>
-      For a total of&nbsp;
+      For a total of&thinsp;
       {props.numPlaylistTracks + props.numTopTracks + props.numSavedTracks}
-      &nbsp;tracks
+      &thinsp;tracks
     </h3>
   );
 

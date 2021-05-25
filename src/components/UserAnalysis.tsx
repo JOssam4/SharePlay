@@ -16,7 +16,7 @@ const UserAnalysis: FC<Props> = (props) => {
   if (props.showsCurrentUser) {
     return (
       <div className="userAnalysis" id="current">
-        <h1>{props.user}</h1>
+        <h1>You</h1>
         <AnalysisExtraInfo
           numPlaylists={props.numPlaylists}
           numPlaylistTracks={props.numPlaylistTracks}

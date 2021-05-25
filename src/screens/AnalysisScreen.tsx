@@ -116,17 +116,17 @@ class AnalysisScreen extends Component<Props, State> {
           <NavigationBar activeScreen="analysis" />
           <div className="info">
             <h1>
-              Welcome to the Analysis Screen&nbsp;
+              Welcome to the Analysis Screen&thinsp;
               {this.state.currentUser}
             </h1>
             <h2>
-              You have searched for&nbsp;
+              You have searched for&thinsp;
               {this.state.userSearchedFor}
             </h2>
             <h4>
-              You can use the options in your&nbsp;
+              You can use the options in your&thinsp;
               <Link to="/me">homepage</Link>
-              &nbsp;to narrow/broaden your results
+              &thinsp;to narrow/broaden your results
             </h4>
           </div>
           <div className="userComparisonWrapper">
@@ -145,18 +145,18 @@ class AnalysisScreen extends Component<Props, State> {
           <NavigationBar activeScreen="analysis" />
           <div className="info">
             <h1>
-              Welcome to the Analysis Screen&nbsp;
+              Welcome to the Analysis Screen&thinsp;
               {this.state.currentUser}
               !
             </h1>
             <h2>
-              You have searched for&nbsp;
+              You have searched for&thinsp;
               {this.state.userSearchedFor}
             </h2>
             <h4>
-              You can use the options in your&nbsp;
+              You can use the options in your&thinsp;
               <Link to="/me">homepage</Link>
-              &nbsp;to narrow/broaden your results
+              &thinsp;to narrow/broaden your results
             </h4>
           </div>
           <div className="userComparisonWrapper">
@@ -176,7 +176,7 @@ class AnalysisScreen extends Component<Props, State> {
           <h1>
             Sorry,
             {this.state.userSearchedFor}
-            &nbsp;doesn&apos;t have any public playlists :(
+            &thinsp;doesn&apos;t have any public playlists :(
           </h1>
           <h3>Come back when you&apos;ve searched for another user.</h3>
         </div>

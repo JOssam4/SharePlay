@@ -8,6 +8,7 @@
 .analysisScreenWrapper {
     background-color: #1DB954;
     padding-top: 65px;
+    text-align: center;
 }
 
 .AnalysisExtraInfo {
@@ -30,6 +31,7 @@ div.userAnalysis {
     align-items: center;
     width: 40%;
     border-radius: 1em;
+    word-break: break-word;
 }
 
 #current {
