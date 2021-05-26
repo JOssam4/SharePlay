@@ -6,6 +6,8 @@
 
 #navContainer {
     margin-left: 0;
+    /* max width of box containing links on navbar is 400*/
+    max-width: 400px;
 }
 
 #navWrapper {

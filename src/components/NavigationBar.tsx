@@ -37,23 +37,6 @@ function NavigationBar({ activeScreen, userSearchedFor }: Props) {
     // analysisButton = <li className="nav-item disabled"><Link to="/analysis" className="nav-link disabledLink" onClick={(event) => event.preventDefault()}>Analysis</Link></li>;
     analysisButton = <li />;
   }
-
-  /*
-  return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" to="/" onClick={(event) => event.preventDefault()}>SharePlay</Link>
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav mr-auto">
-          {meButton}
-
-          {searchButton}
-
-          {analysisButton}
-        </ul>
-      </div>
-    </nav>
-  );
-   */
   return (
     <Navbar collapseOnSelect fixed="top" expand="sm" bg="light" variant="light">
       <Container id="navContainer">
