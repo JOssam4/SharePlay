@@ -6,6 +6,10 @@
   justify-content: center;
 }
 
+html {
+  background-color: #1DB954;
+}
+
 
 div.wrapper {
   background-color: white;
