@@ -7,7 +7,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 
 import { connect } from 'react-redux';
 import {
-  setUsePlaylists, setUseSavedTracks, setUseTopTracks,
+  setUsePlaylists, setUseSavedTracks, setUseTopTracks, setMode, TRACK_MODE, ARTIST_MODE,
 } from '../actions';
 import { DispatchType, StoreType } from '../store';
 
@@ -22,6 +22,9 @@ interface Props {
   setUseSavedTracks: (use: boolean) => void,
   // eslint-disable-next-line no-unused-vars
   setUseTopTracks: (use: boolean, frame: string | null) => void,
+  mode: string,
+  // eslint-disable-next-line no-unused-vars
+  setMode: (mode: string) => void,
 }
 
 interface State {
@@ -29,6 +32,7 @@ interface State {
   useSavedTracks: boolean,
   useTopTracks: boolean,
   topTracksTimeframe: string | null,
+  mode: string,
 }
 
 class SettingsView extends Component<Props, State> {
@@ -39,6 +43,7 @@ class SettingsView extends Component<Props, State> {
       useTopTracks: props.useTopTracks,
       topTracksTimeframe: props.topTracksTimeframe,
       useSavedTracks: props.useSavedTracks,
+      mode: props.mode,
     };
     this.handleSwitchChange = this.handleSwitchChange.bind(this);
     this.handleRadioChange = this.handleRadioChange.bind(this);
@@ -62,6 +67,14 @@ class SettingsView extends Component<Props, State> {
         this.props.setUseSavedTracks(!this.state.useSavedTracks);
         // eslint-disable-next-line react/no-access-state-in-setstate
         this.setState({ useSavedTracks: !this.state.useSavedTracks });
+      } else if (targetName === 'mode') {
+        if (this.state.mode === TRACK_MODE) {
+          this.props.setMode(ARTIST_MODE);
+          this.setState({ mode: ARTIST_MODE });
+        } else {
+          this.props.setMode(TRACK_MODE);
+          this.setState({ mode: TRACK_MODE });
+        }
       } else {
         this.props.setUsePlaylists(event.target.checked);
         this.setState({ ...this.state, [event.target.name]: event.target.checked });
@@ -98,6 +111,9 @@ class SettingsView extends Component<Props, State> {
       <div className="settingsScreenWrapper">
         <div>
           <h1>Options</h1>
+        </div>
+        <div style={{ marginLeft: '5%' }}>
+          <FormControlLabel control={<Switch checked={Boolean(this.state.mode === ARTIST_MODE)} onChange={this.handleSwitchChange} name="mode" inputProps={{ 'aria-label': 'secondary checkbox' }} />} label="Artist Mode" />
         </div>
         <div style={{ marginLeft: '5%' }}>
           <FormControlLabel control={<Switch checked={Boolean(this.state.usePlaylists)} onChange={this.handleSwitchChange} name="usePlaylists" inputProps={{ 'aria-label': 'secondary checkbox' }} />} label="Use playlist data for matchmaking" />
@@ -137,12 +153,14 @@ const mapStateToProps = (state: StoreType) => ({
   useTopTracks: state.useTopTracks,
   topTracksTimeframe: state.topTracksTimeframe,
   useSavedTracks: state.useSavedTracks,
+  mode: state.mode,
 });
 
 const mapDispatchToProps = (dispatch: DispatchType) => ({
   setUsePlaylists: (usePlaylists: boolean) => dispatch(setUsePlaylists(usePlaylists)),
   setUseSavedTracks: (useSavedTracks: boolean) => dispatch(setUseSavedTracks(useSavedTracks)),
   setUseTopTracks: (useTopTracks: boolean, topTracksTimeframe: string | null) => dispatch(setUseTopTracks(useTopTracks, topTracksTimeframe)),
+  setMode: (mode: string) => dispatch(setMode(mode)),
 });
 
 // @ts-ignore

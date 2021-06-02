@@ -1,5 +1,5 @@
 import {
-  SET_AUTHTOKEN, SET_CURRENT_USER, SET_USER_SEARCHED_FOR, SHOW_PLAYLISTS, SET_USE_PLAYLISTS, SET_USE_SAVED_TRACKS, SET_USE_TOP_TRACKS,
+  SET_AUTHTOKEN, SET_CURRENT_USER, SET_USER_SEARCHED_FOR, SHOW_PLAYLISTS, SET_USE_PLAYLISTS, SET_USE_SAVED_TRACKS, SET_USE_TOP_TRACKS, SET_MODE, TRACK_MODE,
 } from '../actions';
 
 export const initialState = {
@@ -11,6 +11,7 @@ export const initialState = {
   useTopTracks: false,
   topTracksTimeframe: null,
   useSavedTracks: true,
+  mode: TRACK_MODE,
 };
 
 function appDataReducer(state = initialState, action: any) {
@@ -29,6 +30,8 @@ function appDataReducer(state = initialState, action: any) {
       return { ...state, useSavedTracks: action.useSavedTracks };
     case SET_USE_TOP_TRACKS:
       return { ...state, useTopTracks: action.useTopTracks, topTracksTimeframe: action.topTracksTimeframe };
+    case SET_MODE:
+      return { ...state, mode: action.mode };
     default:
       return state;
   }

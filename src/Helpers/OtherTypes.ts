@@ -1,4 +1,4 @@
-import { MinArtistType } from './SpotifyAPITypes';
+import { MinArtistType, TrackArtistType } from './SpotifyAPITypes';
 
 type MinifiedTrackType = {
     id: string,
@@ -11,5 +11,20 @@ type MapTrackValue = {
     artists: MinArtistType[],
 };
 
+type MapArtistValue = {
+    name: string,
+    id: string,
+}
+
+type LoadArtistTrackType = {
+    track: {
+        artists: TrackArtistType[],
+        id: string,
+        name: string,
+    }
+}
+
 // eslint-disable-next-line import/prefer-default-export
-export type { MinifiedTrackType, MapTrackValue };
+export type {
+  MinifiedTrackType, MapTrackValue, LoadArtistTrackType, MapArtistValue,
+};

@@ -77,6 +77,15 @@ type MinArtistType = {
     uri: string,
 }
 
+type TrackArtistType = {
+    external_urls: externalUrl,
+    href: string,
+    id: string,
+    name: string,
+    type: string,
+    uri: string,
+}
+
 type AlbumType = {
     album_type: string,
     artists: MinArtistType[],
@@ -142,5 +151,5 @@ type TracksRespWithoutAddedTime = {
 }
 
 export type {
-  Person, Playlist, PlaylistJSON, TrackType, ArtistType, MinArtistType, AlbumType, TrackItems, TracksRespWithAddedTime, TracksRespWithoutAddedTime,
+  Person, Playlist, PlaylistJSON, TrackType, ArtistType, MinArtistType, TrackArtistType, AlbumType, TrackItems, TracksRespWithAddedTime, TracksRespWithoutAddedTime,
 };

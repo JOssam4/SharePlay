@@ -14,12 +14,12 @@ import type {
 } from '../Helpers/SpotifyAPITypes';
 import { MinifiedTrackType } from '../Helpers/OtherTypes';
 
-import CommonTracksHandler from '../components/CommonTracksHandler';
+// import CommonTracksHandler from '../components/CommonTracksHandler';
+import CommonArtistsHandler from '../components/CommonArtistsHandler';
 // import AnalysisExtraInfo from '../components/AnalysisExtraInfo';
-import UserAnalysis from '../components/UserAnalysis';
-
+// import UserAnalysis from '../components/UserAnalysis';
+import UserArtistAnalysis from '../components/UserArtistAnalysis';
 import { getUserPlaylistData, getTopTracks, getSavedTracks } from '../Helpers/AnalysisHelperFuncs';
-
 import '../styles/AnalysisScreen.css';
 
 interface Props {
@@ -116,10 +116,32 @@ class AnalysisScreen extends Component<Props, State> {
             </h4>
           </div>
           <div className="userComparisonWrapper">
-            <UserAnalysis user={this.state.currentUser} numPlaylists={this.state.currentUserPlaylistIDs.length} numPlaylistTracks={this.getTotalTracks(this.state.currentUser)} numSavedTracks={this.state.savedTracks.length} numTopTracks={this.state.topTracks.length} showsCurrentUser />
-            <UserAnalysis user={this.state.userSearchedFor} numPlaylists={this.state.otherUserPlaylistJSON.total} numPlaylistTracks={this.getTotalTracks(this.state.userSearchedFor)} numSavedTracks={0} numTopTracks={0} showsCurrentUser={false} />
+            {/*
+              <UserAnalysis user={this.state.currentUser} numPlaylists={this.state.currentUserPlaylistIDs.length}
+                            numPlaylistTracks={this.getTotalTracks(this.state.currentUser)}
+                            numSavedTracks={this.state.savedTracks.length} numTopTracks={this.state.topTracks.length}
+                            showsCurrentUser/>
+              <UserAnalysis user={this.state.userSearchedFor} numPlaylists={this.state.otherUserPlaylistJSON.total} numPlaylistTracks={this.getTotalTracks(this.state.userSearchedFor)} numSavedTracks={0} numTopTracks={0} showsCurrentUser={false} />
+            */}
+            <UserArtistAnalysis user={this.state.currentUser} numPlaylists={this.state.currentUserPlaylistIDs.length} numPlaylistArtists={69} numSavedTracksArtists={69} numTopTracksArtists={69} showsCurrentUser />
+            <UserArtistAnalysis user={this.state.userSearchedFor} numPlaylists={this.state.otherUserPlaylistIDs.length} numPlaylistArtists={420} numSavedTracksArtists={420} numTopTracksArtists={420} showsCurrentUser={false} />
           </div>
-          <CommonTracksHandler currentUser={this.state.currentUser} userSearchedFor={this.state.userSearchedFor} topTracks={this.state.topTracks} currentUserPlaylistIDs={this.state.currentUserPlaylistIDs} otherUserPlaylistIDs={this.state.otherUserPlaylistIDs} savedTracks={this.state.savedTracks} authToken={this.props.authToken} />
+          {/*
+            <CommonTracksHandler currentUser={this.state.currentUser} userSearchedFor={this.state.userSearchedFor}
+                                 topTracks={this.state.topTracks}
+                                 currentUserPlaylistIDs={this.state.currentUserPlaylistIDs}
+                                 otherUserPlaylistIDs={this.state.otherUserPlaylistIDs}
+                                 savedTracks={this.state.savedTracks} authToken={this.props.authToken}/>
+            */}
+          <CommonArtistsHandler
+            authToken={this.props.authToken}
+            currentUser={this.state.currentUser}
+            currentUserPlaylistIDs={this.state.currentUserPlaylistIDs}
+            otherUserPlaylistIDs={this.state.otherUserPlaylistIDs}
+            topTracks={this.state.topTracks}
+            savedTracks={this.state.savedTracks}
+            userSearchedFor={this.state.userSearchedFor}
+          />
         </div>
       );
     }
@@ -144,10 +166,32 @@ class AnalysisScreen extends Component<Props, State> {
             </h4>
           </div>
           <div className="userComparisonWrapper">
-            <UserAnalysis user={this.state.currentUser} numPlaylists={this.state.currentUserPlaylistIDs.length} numPlaylistTracks={this.getTotalTracks(this.state.currentUser)} numSavedTracks={this.state.savedTracks.length} numTopTracks={this.state.topTracks.length} showsCurrentUser />
-            <UserAnalysis user={this.state.userSearchedFor} numPlaylists={this.state.otherUserPlaylistJSON.total} numPlaylistTracks={this.getTotalTracks(this.state.userSearchedFor)} numSavedTracks={0} numTopTracks={0} showsCurrentUser={false} />
+            {/*
+              <UserAnalysis user={this.state.currentUser} numPlaylists={this.state.currentUserPlaylistIDs.length}
+                            numPlaylistTracks={this.getTotalTracks(this.state.currentUser)}
+                            numSavedTracks={this.state.savedTracks.length} numTopTracks={this.state.topTracks.length}
+                            showsCurrentUser/>
+              <UserAnalysis user={this.state.userSearchedFor} numPlaylists={this.state.otherUserPlaylistJSON.total} numPlaylistTracks={this.getTotalTracks(this.state.userSearchedFor)} numSavedTracks={0} numTopTracks={0} showsCurrentUser={false} />
+            */}
+            <UserArtistAnalysis user={this.state.currentUser} numPlaylists={this.state.currentUserPlaylistIDs.length} numPlaylistArtists={69} numSavedTracksArtists={69} numTopTracksArtists={69} showsCurrentUser />
+            <UserArtistAnalysis user={this.state.userSearchedFor} numPlaylists={this.state.otherUserPlaylistIDs.length} numPlaylistArtists={420} numSavedTracksArtists={420} numTopTracksArtists={420} showsCurrentUser={false} />
           </div>
-          <CommonTracksHandler currentUser={this.state.currentUser} userSearchedFor={this.state.userSearchedFor} topTracks={this.state.topTracks} currentUserPlaylistIDs={this.state.currentUserPlaylistIDs} otherUserPlaylistIDs={this.state.otherUserPlaylistIDs} savedTracks={this.state.savedTracks} authToken={this.props.authToken} />
+          {/*
+            <CommonTracksHandler currentUser={this.state.currentUser} userSearchedFor={this.state.userSearchedFor}
+                                 topTracks={this.state.topTracks}
+                                 currentUserPlaylistIDs={this.state.currentUserPlaylistIDs}
+                                 otherUserPlaylistIDs={this.state.otherUserPlaylistIDs}
+                                 savedTracks={this.state.savedTracks} authToken={this.props.authToken}/>
+          */}
+          <CommonArtistsHandler
+            authToken={this.props.authToken}
+            currentUser={this.state.currentUser}
+            currentUserPlaylistIDs={this.state.currentUserPlaylistIDs}
+            otherUserPlaylistIDs={this.state.otherUserPlaylistIDs}
+            topTracks={this.state.topTracks}
+            savedTracks={this.state.savedTracks}
+            userSearchedFor={this.state.userSearchedFor}
+          />
         </div>
       );
     }

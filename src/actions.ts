@@ -5,6 +5,9 @@ export const SHOW_PLAYLISTS = 'SHOW_PLAYLISTS';
 export const SET_USE_PLAYLISTS = 'SET_USE_PLAYLISTS';
 export const SET_USE_TOP_TRACKS = 'SET_USE_TOP_TRACKS';
 export const SET_USE_SAVED_TRACKS = 'SET_USE_SAVED_TRACKS';
+export const SET_MODE = 'SET_MODE';
+export const TRACK_MODE = 'TRACK_MODE';
+export const ARTIST_MODE = 'ARTIST_MODE';
 
 export function setAuthToken(authToken: string) {
   return {
@@ -53,5 +56,12 @@ export function setUseSavedTracks(useSavedTracks: boolean) {
   return {
     type: SET_USE_SAVED_TRACKS,
     useSavedTracks,
+  };
+}
+
+export function setMode(mode: string) {
+  return {
+    type: SET_MODE,
+    mode,
   };
 }
