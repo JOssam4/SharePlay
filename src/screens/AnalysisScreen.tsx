@@ -12,7 +12,7 @@ import type {
   // eslint-disable-next-line no-unused-vars
   Playlist, PlaylistJSON, TrackItems, TrackType, TracksRespWithAddedTime, TracksRespWithoutAddedTime,
 } from '../Helpers/SpotifyAPITypes';
-import { MinifiedTrackType, MapTrackValue } from '../Helpers/OtherTypes';
+import { MinifiedTrackType } from '../Helpers/OtherTypes';
 
 import CommonTracksHandler from '../components/CommonTracksHandler';
 // import AnalysisExtraInfo from '../components/AnalysisExtraInfo';
@@ -41,12 +41,9 @@ interface State {
   currentUser: string,
   currentUserPlaylistIDs: string[],
   currentUserPlaylistJSON: PlaylistJSON | null,
-  currentUserTrackMap: Map<string, number>,
   otherUserPlaylistIDs: string[],
   otherUserPlaylistJSON: PlaylistJSON | null, // I'll fill this in later,
   savedTracks: MinifiedTrackType[],
-  sharedPlaylist: any,
-  sharedTracks: Map<string, MapTrackValue>,
   topTracks: MinifiedTrackType[],
   userSearchedFor: string,
 }
@@ -59,20 +56,10 @@ class AnalysisScreen extends Component<Props, State> {
       userSearchedFor: this.props.userSearchedFor,
       currentUserPlaylistJSON: null,
       otherUserPlaylistJSON: null,
-
       currentUserPlaylistIDs: [],
       otherUserPlaylistIDs: [],
-
-      // eslint-disable-next-line react/no-unused-state
-      currentUserTrackMap: new Map(),
-      // eslint-disable-next-line react/no-unused-state
-      sharedTracks: new Map(),
       topTracks: [],
-
       savedTracks: [],
-
-      // eslint-disable-next-line react/no-unused-state
-      sharedPlaylist: null,
     };
   }
 
