@@ -203,20 +203,28 @@ class CommonArtistsHandler extends Component<Props, State> {
                 // eslint-disable-next-line no-restricted-syntax
                 for (const each of trackObj.track.artists) {
                   if (this.state.currentUserArtistMap.has(each.name)) {
-                    trackObj.track.artists.forEach((artist) => {
-                      if (sharedArtists.has(artist.name)) {
+                    if (sharedArtists.has(each.name)) {
+                      // @ts-ignore
+                      if (!sharedArtists.get(each.name).includes({ name: trackObj.track.name, id: trackObj.track.id })) {
                         // @ts-ignore
-                        sharedArtists.set(artist.name, sharedArtists.get(artist.name).concat({ name: trackObj.track.name, id: trackObj.track.id }));
-                      } else {
-                        sharedArtists.set(artist.name, [{ name: trackObj.track.name, id: trackObj.track.id }]);
+                        sharedArtists.set(each.name, sharedArtists.get(each.name).concat({ name: trackObj.track.name, id: trackObj.track.id }));
                       }
-                    });
+                    } else {
+                      sharedArtists.set(each.name, [{ name: trackObj.track.name, id: trackObj.track.id }]);
+                    }
                   }
                 }
                 sharedArtists.forEach((value, artistName) => {
                   if (this.state.currentUserArtistMap.has(artistName)) {
+                    // sharedArtists.set(artistName, sharedArtists.get(artistName).concat(this.state.currentUserArtistMap.get(artistName)));
                     // @ts-ignore
-                    sharedArtists.set(artistName, sharedArtists.get(artistName).concat(this.state.currentUserArtistMap.get(artistName)));
+                    this.state.currentUserArtistMap.get(artistName).forEach((myTrack) => {
+                      // @ts-ignore
+                      if (!sharedArtists.get(artistName).includes(myTrack)) {
+                        // @ts-ignore
+                        sharedArtists.set(artistName, sharedArtists.get(artistName).concat(myTrack));
+                      }
+                    });
                   }
                 });
               }
