@@ -50,7 +50,7 @@ export default class SharedDataViewArtists extends Component<Props, State> {
       const artistTrackCards: JSX.Element[] = [];
       mapTracks.forEach((trackObj: MapArtistValue) => {
         artistTrackCards.push(
-          <Card key={counter} className="trackCard">
+          <Card key={counter} className="trackCardInAccordion">
             <Card.Body>
               {trackObj.name}
               &thinsp;-&thinsp;
@@ -61,7 +61,7 @@ export default class SharedDataViewArtists extends Component<Props, State> {
         counter += 1;
       });
       cards.push(
-        <Accordion>
+        <Accordion className="artistAccordion">
           <Card>
             <Card.Header>
               <Accordion.Toggle as={Button} variant="link" eventKey={counter.toString()}>
