@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import {
-  MinifiedTrackType, MapTrackValue, LoadArtistTrackType, MapArtistValue,
+  MinifiedTrackType, LoadArtistTrackType, MapArtistValue,
 } from '../Helpers/OtherTypes';
 // import SharedDataView from './SharedDataView';
 import SharedDataViewArtists from './SharedDataViewArtists';
@@ -27,11 +27,9 @@ interface Props {
 }
 
 interface State {
-  currentUserTrackMap: Map<string, MapTrackValue>,
   currentUserArtistMap: Map<string, MapArtistValue[]>,
   finishedComparing: boolean,
-  sharedPlaylist: any,
-  sharedTracks: Map<string, MapTrackValue>,
+  sharedPlaylist: string | null, // the ID of the Spotify playlist
   sharedArtists: Map<string, MapArtistValue[]>
   compareButtonDisabled: boolean,
 }
@@ -48,59 +46,17 @@ class CommonArtistsHandler extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      currentUserTrackMap: new Map<string, MapTrackValue>(),
       currentUserArtistMap: new Map<string, MapArtistValue[]>(),
-      sharedTracks: new Map<string, MapTrackValue>(),
-      // v-- this error is wrong. sharedArtists is used in compareArtists, and after testing I've seen that it works.
-      // eslint-disable-next-line react/no-unused-state
       sharedArtists: new Map<string, MapArtistValue[]>(),
       // eslint-disable-next-line react/no-unused-state
       sharedPlaylist: null,
       finishedComparing: false,
       compareButtonDisabled: false,
     };
-    this.loadTrackData = this.loadTrackData.bind(this);
     this.loadArtistData = this.loadArtistData.bind(this);
-    this.compareTracks = this.compareTracks.bind(this);
     this.compareArtists = this.compareArtists.bind(this);
     this.createPlaylist = this.createPlaylist.bind(this);
     this.loadAndCompare = this.loadAndCompare.bind(this);
-  }
-
-  loadTrackData() {
-    const currentUserTracks = new Map();
-    if (this.props.savedTracks) {
-      this.props.savedTracks.forEach((track: MinifiedTrackType) => {
-        currentUserTracks.set(track.id, { name: track.name, artists: track.artists });
-      });
-    }
-    if (this.props.topTracks) {
-      this.props.topTracks.forEach((track) => {
-        currentUserTracks.set(track.id, { name: track.name, artists: track.artists });
-      });
-    }
-    if (this.props.currentUserPlaylistIDs.length > 0) {
-      this.props.currentUserPlaylistIDs.forEach((playlistID) => {
-        fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks?fields=items(track.id,track.name)`, {
-          headers: {
-            Authorization: `Bearer ${this.props.authToken}`,
-          },
-        }).then((resp) => {
-          resp.json().then((respjson) => {
-            // @ts-ignore
-            respjson.items.forEach((trackObj) => {
-              if (trackObj.track && trackObj.track.id && trackObj.track.name) {
-                currentUserTracks.set(trackObj.track.id, trackObj.track.name);
-              }
-            });
-            this.setState({ currentUserTrackMap: currentUserTracks }); // This will cause the state to update as many times as there are playlists, but at least it works. This code severely needs an async/await.
-          });
-        });
-      });
-    } else {
-      // Current user playlist data not read.
-      this.setState({ currentUserTrackMap: currentUserTracks });
-    }
   }
 
   loadArtistData() {
@@ -163,31 +119,6 @@ class CommonArtistsHandler extends Component<Props, State> {
     }
   }
 
-  compareTracks() {
-    const sharedTracks = new Map();
-    if (this.state.currentUserTrackMap) {
-      this.props.otherUserPlaylistIDs.forEach((playlistID: string) => {
-        fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks?fields=items(track.id,track.name,track.artists)`, {
-          headers: {
-            Authorization: `Bearer ${this.props.authToken}`,
-          },
-        }).then((resp) => {
-          resp.json().then((respjson) => {
-            // @ts-ignore
-            respjson.items.forEach((trackObj: trackObject) => {
-              if (trackObj.track && trackObj.track.id) {
-                if (this.state.currentUserTrackMap.has(trackObj.track.id)) {
-                  sharedTracks.set(trackObj.track.id, { name: trackObj.track.name, artists: trackObj.track.artists });
-                }
-              }
-            });
-            this.setState({ sharedTracks, finishedComparing: true });
-          });
-        });
-      });
-    }
-  }
-
   compareArtists() {
     const sharedArtists = new Map<string, MapArtistValue[]>();
     if (this.state.currentUserArtistMap) {
@@ -233,7 +164,6 @@ class CommonArtistsHandler extends Component<Props, State> {
             sharedArtists.forEach((value, artistName) => {
               sharedArtists.set(artistName, this.uniqueify(value));
             });
-            // eslint-disable-next-line react/no-unused-state
             this.setState({ finishedComparing: true, sharedArtists });
           });
         });
@@ -261,7 +191,7 @@ class CommonArtistsHandler extends Component<Props, State> {
       method: 'post',
       headers: { Authorization: `Bearer ${this.props.authToken}` },
       body: JSON.stringify({
-        name: `${this.props.userSearchedFor} and me`,
+        name: `${this.props.userSearchedFor} and me (artists)`,
         description: `Shared playlist with ${this.props.userSearchedFor}`,
         public: false,
       }),
@@ -276,11 +206,13 @@ class CommonArtistsHandler extends Component<Props, State> {
   fillPlaylist(sharedPlaylistID: string): boolean {
     if (sharedPlaylistID) {
       const uris: string[] = [];
-      this.state.sharedTracks.forEach((songName, id) => {
-        uris.push(`spotify:track:${id}`);
+      this.state.sharedArtists.forEach((trackList) => {
+        // uris.push(`spotify:track:${value.id}`);
+        trackList.forEach((trackObj: MapArtistValue) => {
+          uris.push(`spotify:track:${trackObj.id}`);
+        });
       });
-      // eslint-disable-next-line no-unused-vars
-      fetch(`https://api.spotify.com/v1/playlists/${sharedPlaylistID}/tracks?uris=${uris}`, { method: 'post', headers: { Authorization: `Bearer ${this.props.authToken}` } }).then((resp) => {
+      fetch(`https://api.spotify.com/v1/playlists/${sharedPlaylistID}/tracks?uris=${uris}`, { method: 'post', headers: { Authorization: `Bearer ${this.props.authToken}` } }).then(() => {
         // eslint-disable-next-line react/no-unused-state
         this.setState({ sharedPlaylist: sharedPlaylistID });
         return true;
@@ -306,15 +238,6 @@ class CommonArtistsHandler extends Component<Props, State> {
         </div>
       );
     }
-    /*
-    return (
-      <div className="comparisonView">
-        <Button onClick={this.loadAndCompare} variant="primary" id="compare-button" disabled={this.state.compareButtonDisabled}>Compare Tracks</Button>
-        {this.state.sharedTracks.size > 0
-        && <SharedDataView sharedTracks={this.state.sharedTracks} playlistGenerator={this.createPlaylist} />}
-      </div>
-    );
-     */
     return (
       <div className="comparisonView">
         <Button onClick={this.loadAndCompare} variant="primary" id="compare-button" disabled={this.state.compareButtonDisabled}>Compare Artists</Button>
