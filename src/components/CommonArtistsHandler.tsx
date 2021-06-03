@@ -10,9 +10,8 @@ import PropTypes from 'prop-types';
 import {
   MinifiedTrackType, LoadArtistTrackType, MapArtistValue,
 } from '../Helpers/OtherTypes';
-// import SharedDataView from './SharedDataView';
 import SharedDataViewArtists from './SharedDataViewArtists';
-import { MinArtistType/* , TrackArtistType */ } from '../Helpers/SpotifyAPITypes';
+import { MinArtistType /* , TrackArtistType */ } from '../Helpers/SpotifyAPITypes';
 
 import '../styles/AnalysisScreen.css';
 
@@ -49,7 +48,7 @@ class CommonArtistsHandler extends Component<Props, State> {
       currentUserArtistMap: new Map<string, MapArtistValue[]>(),
       sharedArtists: new Map<string, MapArtistValue[]>(),
       // eslint-disable-next-line react/no-unused-state
-      sharedPlaylist: null,
+      sharedPlaylist: null, // keeping this in in case we eventually add functionality where we need the id
       finishedComparing: false,
       compareButtonDisabled: false,
     };
@@ -61,10 +60,8 @@ class CommonArtistsHandler extends Component<Props, State> {
 
   loadArtistData() {
     const artistMap = new Map<string, MapArtistValue[]>();
-    // const artistObj = {};
     if (this.props.savedTracks) {
       this.props.savedTracks.forEach((track: MinifiedTrackType) => {
-        // currentUserTracks.set(track.id, { name: track.name, artists: track.artists });
         track.artists.forEach((artist: string) => {
           if (!artistMap.has(artist)) {
             artistMap.set(artist, [{ name: track.name, id: track.id }]);
@@ -77,16 +74,14 @@ class CommonArtistsHandler extends Component<Props, State> {
     }
     if (this.props.topTracks) {
       this.props.topTracks.forEach((track) => {
-        // currentUserTracks.set(track.id, { name: track.name, artists: track.artists });
-        // eslint-disable-next-line no-restricted-syntax
-        for (const artist of track.artists) {
+        track.artists.forEach((artist) => {
           if (artistMap.has(artist)) {
             // @ts-ignore
             artistMap.set(artist, artistMap.get(artist).concat({ name: track.name, id: track.id })); // add track id to array in artist map
           } else {
             artistMap.set(artist, [{ name: track.name, id: track.id }]);
           }
-        }
+        });
       });
     }
     if (this.props.currentUserPlaylistIDs.length > 0) {
@@ -100,16 +95,14 @@ class CommonArtistsHandler extends Component<Props, State> {
             // @ts-ignore
             respjson.items.forEach((trackObj: LoadArtistTrackType) => {
               if (trackObj.track?.id && trackObj.track?.name) {
-                // currentUserTracks.set(trackObj.track.id, trackObj.track.name);
-                // eslint-disable-next-line no-restricted-syntax
-                for (const artist of trackObj.track.artists) {
+                trackObj.track.artists.forEach((artist) => {
                   if (artistMap.has(artist.name)) {
                     // @ts-ignore
                     artistMap.set(artist.name, artistMap.get(artist.name).concat({ name: trackObj.track.name, id: trackObj.track.id }));
                   } else {
                     artistMap.set(artist.name, [{ name: trackObj.track.name, id: trackObj.track.id }]);
                   }
-                }
+                });
               }
             });
             this.setState({ currentUserArtistMap: artistMap }); // This will cause the state to update as many times as there are playlists, but at least it works. This code severely needs an async/await.
@@ -132,8 +125,7 @@ class CommonArtistsHandler extends Component<Props, State> {
             // @ts-ignore
             respjson.items.forEach((trackObj: trackObject) => {
               if (trackObj.track && trackObj.track.id) {
-                // eslint-disable-next-line no-restricted-syntax
-                for (const each of trackObj.track.artists) {
+                trackObj.track.artists.forEach((each) => {
                   if (this.state.currentUserArtistMap.has(each.name)) {
                     if (sharedArtists.has(each.name)) {
                       // @ts-ignore
@@ -145,10 +137,9 @@ class CommonArtistsHandler extends Component<Props, State> {
                       sharedArtists.set(each.name, [{ name: trackObj.track.name, id: trackObj.track.id }]);
                     }
                   }
-                }
+                });
                 sharedArtists.forEach((value, artistName) => {
                   if (this.state.currentUserArtistMap.has(artistName)) {
-                    // sharedArtists.set(artistName, sharedArtists.get(artistName).concat(this.state.currentUserArtistMap.get(artistName)));
                     // @ts-ignore
                     this.state.currentUserArtistMap.get(artistName).forEach((myTrack) => {
                       // @ts-ignore
@@ -199,15 +190,13 @@ class CommonArtistsHandler extends Component<Props, State> {
       resp.json().then((respjson) => {
         this.fillPlaylist(respjson.id);
       });
-      // eslint-disable-next-line no-unused-vars
-    }).catch((err) => null);
+    }).catch(() => null);
   }
 
   fillPlaylist(sharedPlaylistID: string): boolean {
     if (sharedPlaylistID) {
       const uris: string[] = [];
       this.state.sharedArtists.forEach((trackList) => {
-        // uris.push(`spotify:track:${value.id}`);
         trackList.forEach((trackObj: MapArtistValue) => {
           uris.push(`spotify:track:${trackObj.id}`);
         });
@@ -216,17 +205,14 @@ class CommonArtistsHandler extends Component<Props, State> {
         // eslint-disable-next-line react/no-unused-state
         this.setState({ sharedPlaylist: sharedPlaylistID });
         return true;
-        // eslint-disable-next-line no-unused-vars
-      }).catch((err) => false);
+      }).catch(() => false);
     }
     return false;
   }
 
   loadAndCompare() {
     this.setState({ compareButtonDisabled: true });
-    // this.loadTrackData();
     this.loadArtistData();
-    // this.compareTracks();
     this.compareArtists();
   }
 
