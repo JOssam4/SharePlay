@@ -11,6 +11,7 @@ import {
   MinifiedTrackType, MapTrackValue, LoadArtistTrackType, MapArtistValue,
 } from '../Helpers/OtherTypes';
 // import SharedDataView from './SharedDataView';
+import SharedDataViewArtists from './SharedDataViewArtists';
 import { MinArtistType/* , TrackArtistType */ } from '../Helpers/SpotifyAPITypes';
 
 import '../styles/AnalysisScreen.css';
@@ -298,7 +299,7 @@ class CommonArtistsHandler extends Component<Props, State> {
   }
 
   render() {
-    if (this.state.finishedComparing && this.state.sharedTracks.size === 0) {
+    if (this.state.finishedComparing && this.state.sharedArtists.size === 0) {
       return (
         <div>
           <h3>Sorry, no shared artists found.</h3>
@@ -317,6 +318,8 @@ class CommonArtistsHandler extends Component<Props, State> {
     return (
       <div className="comparisonView">
         <Button onClick={this.loadAndCompare} variant="primary" id="compare-button" disabled={this.state.compareButtonDisabled}>Compare Artists</Button>
+        {this.state.sharedArtists.size > 0
+        && <SharedDataViewArtists sharedArtists={this.state.sharedArtists} playlistGenerator={this.createPlaylist} />}
       </div>
     );
   }
