@@ -207,7 +207,7 @@ class CommonArtistsHandler extends Component<Props, State> {
                       // @ts-ignore
                       if (!sharedArtists.get(each.name).includes({ name: trackObj.track.name, id: trackObj.track.id })) {
                         // @ts-ignore
-                        sharedArtists.set(each.name, sharedArtists.get(each.name).concat({ name: trackObj.track.name, id: trackObj.track.id }));
+                        sharedArtists.set(each.name, Array.from(new Set(sharedArtists.get(each.name).concat({ name: trackObj.track.name, id: trackObj.track.id }))));
                       }
                     } else {
                       sharedArtists.set(each.name, [{ name: trackObj.track.name, id: trackObj.track.id }]);
@@ -222,12 +222,15 @@ class CommonArtistsHandler extends Component<Props, State> {
                       // @ts-ignore
                       if (!sharedArtists.get(artistName).includes(myTrack)) {
                         // @ts-ignore
-                        sharedArtists.set(artistName, sharedArtists.get(artistName).concat(myTrack));
+                        sharedArtists.set(artistName, Array.from(new Set(sharedArtists.get(artistName).concat(myTrack))));
                       }
                     });
                   }
                 });
               }
+            });
+            sharedArtists.forEach((value, artistName) => {
+              sharedArtists.set(artistName, this.uniqueify(value));
             });
             // eslint-disable-next-line react/no-unused-state
             this.setState({ finishedComparing: true, sharedArtists });
@@ -235,6 +238,21 @@ class CommonArtistsHandler extends Component<Props, State> {
         });
       });
     }
+  }
+
+  /**
+   * Sometimes (and by sometimes I mean all the time), a track obj {name, id} will be repeated multiple times within the same set associated with an artist.
+   * The purpose of this function is to make sure each track object in the array is unique.
+   * */
+  // eslint-disable-next-line class-methods-use-this
+  uniqueify(trackObjArray: MapArtistValue[]): MapArtistValue[] {
+    const trackObjMap = new Map<string, MapArtistValue>();
+    trackObjArray.forEach((trackObj: MapArtistValue) => {
+      if (!trackObjMap.has(trackObj.name)) { // Using name here instead of id because if two tracks are by the same artist with the same name, they're probably the same song, whereas id's can be different (like with re-releases)
+        trackObjMap.set(trackObj.name, trackObj);
+      }
+    });
+    return Array.from(trackObjMap.values());
   }
 
   createPlaylist() {
